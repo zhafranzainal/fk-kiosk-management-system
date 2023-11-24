@@ -35,9 +35,9 @@ class KioskParticipant extends Model
         return $this->belongsTo(Bank::class);
     }
 
-    public function students()
+    public function student()
     {
-        return $this->hasMany(Student::class);
+        return $this->hasOne(Student::class);
     }
 
     public function sales()
