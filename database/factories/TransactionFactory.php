@@ -18,7 +18,6 @@ class TransactionFactory extends Factory
     public function definition(): array
     {
         return [
-            'id' => $this->faker->randomNumber(2, false),
             'user_id' => User::inRandomOrder()->pluck('id')->first(),
             'amount' => $this->faker->randomFloat(2, 0, 1000),
             'status' => 'Pending',
