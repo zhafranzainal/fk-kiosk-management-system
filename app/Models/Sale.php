@@ -15,7 +15,9 @@ class Sale extends Model
 
     protected $fillable = [
         'kiosk_participant_id',
-        'amount',
+        'monthly_revenue',
+        'cost_of_goods_sold',
+        'profit',
     ];
 
     public function kioskParticipant()

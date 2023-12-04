@@ -15,7 +15,9 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->foreignId('kiosk_participant_id');
             $table->foreign('kiosk_participant_id')->references('id')->on('kiosk_participants')->onUpdate('CASCADE')->onDelete('CASCADE');
-            $table->float('amount');
+            $table->float('monthly_revenue');
+            $table->float('cost_of_goods_sold');
+            $table->float('profit');
 
             $table->timestamps();
             $table->softDeletes();

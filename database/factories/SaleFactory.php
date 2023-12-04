@@ -19,7 +19,9 @@ class SaleFactory extends Factory
     {
         return [
             'kiosk_participant_id' => KioskParticipant::inRandomOrder()->pluck('id')->first(),
-            'amount' => $this->faker->randomFloat(2, 500, 10000),
+            'monthly_revenue' => $this->faker->randomFloat(2, 500, 10000),
+            'cost_of_goods_sold' => $this->faker->randomFloat(2, 500, 10000),
+            'profit' => $this->faker->randomFloat(2, 500, 10000),
         ];
     }
 }
