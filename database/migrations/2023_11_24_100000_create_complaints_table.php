@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->string('description');
+            $table->string('assign_to');
             $table->enum('status', ['Pending', 'In Progress', 'Completed'])->default('Pending');
 
             $table->timestamps();

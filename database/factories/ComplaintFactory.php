@@ -21,6 +21,7 @@ class ComplaintFactory extends Factory
             'kiosk_participant_id' => KioskParticipant::inRandomOrder()->pluck('id')->first(),
             'user_id' => KioskParticipant::inRandomOrder()->pluck('id')->first(),
             'description' => $this->faker->sentence(),
+            'assign_to' => $this->faker->name(),
             'status' => 'Pending',
         ];
     }

@@ -17,6 +17,7 @@ class Complaint extends Model
         'kiosk_participant_id',
         'user_id',
         'description',
+        'assign_to',
         'status',
     ];
 
