@@ -12,7 +12,8 @@ class SaleController extends Controller
      */
     public function index()
     {
-        //
+        $sales = Sale::All();
+        return view('sales.index', compact('sales'));
     }
 
     /**
@@ -20,7 +21,7 @@ class SaleController extends Controller
      */
     public function create()
     {
-        //
+        return view('sales.create');
     }
 
     /**
@@ -28,7 +29,8 @@ class SaleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Sale::create($request->all());
+        return redirect()->route('sales.index');
     }
 
     /**
