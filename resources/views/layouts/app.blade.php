@@ -23,10 +23,6 @@
     <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
     <link rel="shortcut icon" href="assets/images/favicon.ico">
 
-    <!-- Datatables css -->
-    <link href="assets/css/vendor/dataTables.bootstrap4.css" rel="stylesheet" type="text/css">
-    <link href="assets/css/vendor/responsive.bootstrap4.css" rel="stylesheet" type="text/css">
-
 </head>
 
 <body class="loading"
@@ -131,8 +127,7 @@
                             <a class="nav-link dropdown-toggle nav-user arrow-none mr-0" data-toggle="dropdown"
                                 href="#" role="button" aria-haspopup="false" aria-expanded="false">
                                 <span class="account-user-avatar">
-                                    <img src="assets/images/users/avatar-1.jpg" alt="user-image"
-                                        class="rounded-circle">
+                                    <img src="assets/images/users/avatar-1.jpg" alt="user-image" class="rounded-circle">
                                 </span>
                             </a>
 
