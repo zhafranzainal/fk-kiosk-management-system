@@ -10,9 +10,12 @@ class ApplicationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $this->authorize('view-any', Application::class);
+
+        $applications = Application::All();
+        return view('applications.index', compact('applications'));
     }
 
     /**

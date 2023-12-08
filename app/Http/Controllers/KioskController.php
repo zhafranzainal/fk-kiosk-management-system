@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BusinessType;
 use App\Models\Kiosk;
 use Illuminate\Http\Request;
 
@@ -10,9 +11,12 @@ class KioskController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $this->authorize('view-any', Kiosk::class);
+
+        $kiosks = Kiosk::All();
+        return view('kiosks.index', compact('kiosks'));
     }
 
     /**
@@ -20,7 +24,11 @@ class KioskController extends Controller
      */
     public function create()
     {
-        //
+        $this->authorize('create', Kiosk::class);
+
+        $businessTypes = BusinessType::pluck('name', 'id');
+
+        return view('kiosks.create', compact('businessTypes'));
     }
 
     /**

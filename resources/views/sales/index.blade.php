@@ -1,5 +1,6 @@
-@extends('layouts.base-kiosk')
-@section('content')
+<x-app-layout>
+    <br>
+
     {{-- Profile Page --}}
     <div class="row"> <!-- start page title -->
         <div class="col-12">
@@ -14,7 +15,8 @@
             <div class="card widget-flat">
                 <div class="card-body">
                     <div class="float-right">
-                        <i class="mdi mdi-account-multiple widget-icon" style="color: black; background-color:#df8180;"></i>
+                        <i class="mdi mdi-account-multiple widget-icon"
+                            style="color: black; background-color:#df8180;"></i>
                     </div>
                     <h5 class="text-muted font-weight-normal mt-0" title="This Month">This Month</h5>
                     <h3 class="mt-3 mb-3">36,254</h3>
@@ -215,7 +217,8 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h4 class="modal-title" id="myLargeModalLabel">Edit modal</h4>
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <button type="button" class="close" data-dismiss="modal"
+                                    aria-hidden="true">×</button>
                             </div>
                             <div class="modal-body">
                                 <form>
@@ -292,7 +295,8 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h4 class="font-14" id="mySmallModalLabel">Delete Data</h4>
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <button type="button" class="close" data-dismiss="modal"
+                                    aria-hidden="true">×</button>
                             </div>
                             <div class="modal-body">
                                 <p>Are you sure want to delete this data?</p>
@@ -346,14 +350,15 @@
                             <div class="col-lg-6">
                                 <div class="form-group mb-3">
                                     <label for="example-email">Email</label>
-                                    <input type="email" id="example-email" name="example-email" class="form-control"
-                                        placeholder="Email">
+                                    <input type="email" id="example-email" name="example-email"
+                                        class="form-control" placeholder="Email">
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group mb-3">
                                     <label for="example-password">Password</label>
-                                    <input type="password" id="example-password" class="form-control" value="password">
+                                    <input type="password" id="example-password" class="form-control"
+                                        value="password">
                                 </div>
                             </div>
                             <div class="col-lg-6">
@@ -409,7 +414,8 @@
                                     <label for="example-helping">Helping text</label>
                                     <input type="text" id="example-helping" class="form-control"
                                         placeholder="Helping text">
-                                    <span class="help-block"><small>A block of help text that breaks onto a new line and
+                                    <span class="help-block"><small>A block of help text that breaks onto a new line
+                                            and
                                             may extend beyond one line.</small></span>
                                 </div>
                             </div>
@@ -568,4 +574,5 @@
             </div><!-- end card-->
         </div> <!-- end col -->
     </div> <!-- end row -->
-@endsection
+
+</x-app-layout>

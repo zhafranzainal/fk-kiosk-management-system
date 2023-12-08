@@ -12,7 +12,10 @@ class ComplaintController extends Controller
      */
     public function index()
     {
-        //
+        $this->authorize('view-any', Complaint::class);
+
+        $complaints = Complaint::All();
+        return view('complaints.index', compact('complaints'));
     }
 
     /**
