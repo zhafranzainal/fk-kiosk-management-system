@@ -11,8 +11,10 @@ class ApplicationController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        //
+    {   
+        $applications = Application::paginate(10);
+
+        return view('applications.index', compact('applications'));
     }
 
     /**
