@@ -22,6 +22,11 @@ class Application extends Model
         'status',
     ];
 
+    protected $casts = [
+        'start_date' => 'date',
+        'end_date' => 'date',
+    ];
+
     public function transaction()
     {
         return $this->belongsTo(Transaction::class);
