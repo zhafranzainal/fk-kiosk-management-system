@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApplicationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SaleController;
 
@@ -17,6 +18,8 @@ use App\Http\Controllers\SaleController;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::resource('/manage-applications', ApplicationController::class);
 
 Route::resource('/manage-sales', SaleController::class);
 
