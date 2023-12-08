@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Sale;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class SalePolicy
 {
@@ -13,7 +12,7 @@ class SalePolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return $user->hasPermissionTo('list sales');
     }
 
     /**
@@ -21,7 +20,7 @@ class SalePolicy
      */
     public function view(User $user, Sale $sale): bool
     {
-        //
+        return $user->hasPermissionTo('view sales');
     }
 
     /**
@@ -29,7 +28,7 @@ class SalePolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->hasPermissionTo('create sales');
     }
 
     /**
@@ -37,7 +36,7 @@ class SalePolicy
      */
     public function update(User $user, Sale $sale): bool
     {
-        //
+        return $user->hasPermissionTo('update sales');
     }
 
     /**
@@ -45,7 +44,7 @@ class SalePolicy
      */
     public function delete(User $user, Sale $sale): bool
     {
-        //
+        return $user->hasPermissionTo('delete sales');
     }
 
     /**
@@ -53,7 +52,7 @@ class SalePolicy
      */
     public function restore(User $user, Sale $sale): bool
     {
-        //
+        return false;
     }
 
     /**
@@ -61,6 +60,6 @@ class SalePolicy
      */
     public function forceDelete(User $user, Sale $sale): bool
     {
-        //
+        return false;
     }
 }

@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Transaction;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class TransactionPolicy
 {
@@ -13,7 +12,7 @@ class TransactionPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return $user->hasPermissionTo('list transactions');
     }
 
     /**
@@ -21,7 +20,7 @@ class TransactionPolicy
      */
     public function view(User $user, Transaction $transaction): bool
     {
-        //
+        return $user->hasPermissionTo('view transactions');
     }
 
     /**
@@ -29,7 +28,7 @@ class TransactionPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->hasPermissionTo('create transactions');
     }
 
     /**
@@ -37,7 +36,7 @@ class TransactionPolicy
      */
     public function update(User $user, Transaction $transaction): bool
     {
-        //
+        return $user->hasPermissionTo('update transactions');
     }
 
     /**
@@ -45,7 +44,7 @@ class TransactionPolicy
      */
     public function delete(User $user, Transaction $transaction): bool
     {
-        //
+        return $user->hasPermissionTo('delete transactions');
     }
 
     /**
@@ -53,7 +52,7 @@ class TransactionPolicy
      */
     public function restore(User $user, Transaction $transaction): bool
     {
-        //
+        return false;
     }
 
     /**
@@ -61,6 +60,6 @@ class TransactionPolicy
      */
     public function forceDelete(User $user, Transaction $transaction): bool
     {
-        //
+        return false;
     }
 }

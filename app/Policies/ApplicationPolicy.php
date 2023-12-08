@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Application;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class ApplicationPolicy
 {
@@ -13,7 +12,7 @@ class ApplicationPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return $user->hasPermissionTo('list applications');
     }
 
     /**
@@ -21,7 +20,7 @@ class ApplicationPolicy
      */
     public function view(User $user, Application $application): bool
     {
-        //
+        return $user->hasPermissionTo('view applications');
     }
 
     /**
@@ -29,7 +28,7 @@ class ApplicationPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->hasPermissionTo('create applications');
     }
 
     /**
@@ -37,7 +36,7 @@ class ApplicationPolicy
      */
     public function update(User $user, Application $application): bool
     {
-        //
+        return $user->hasPermissionTo('update applications');
     }
 
     /**
@@ -45,7 +44,7 @@ class ApplicationPolicy
      */
     public function delete(User $user, Application $application): bool
     {
-        //
+        return $user->hasPermissionTo('delete applications');
     }
 
     /**
@@ -53,7 +52,7 @@ class ApplicationPolicy
      */
     public function restore(User $user, Application $application): bool
     {
-        //
+        return false;
     }
 
     /**
@@ -61,6 +60,6 @@ class ApplicationPolicy
      */
     public function forceDelete(User $user, Application $application): bool
     {
-        //
+        return false;
     }
 }

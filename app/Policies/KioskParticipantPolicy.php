@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\KioskParticipant;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class KioskParticipantPolicy
 {
@@ -13,7 +12,7 @@ class KioskParticipantPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return $user->hasPermissionTo('list kiosk participants');
     }
 
     /**
@@ -21,7 +20,7 @@ class KioskParticipantPolicy
      */
     public function view(User $user, KioskParticipant $kioskParticipant): bool
     {
-        //
+        return $user->hasPermissionTo('view kiosk participants');
     }
 
     /**
@@ -29,7 +28,7 @@ class KioskParticipantPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->hasPermissionTo('create kiosk participants');
     }
 
     /**
@@ -37,7 +36,7 @@ class KioskParticipantPolicy
      */
     public function update(User $user, KioskParticipant $kioskParticipant): bool
     {
-        //
+        return $user->hasPermissionTo('update kiosk participants');
     }
 
     /**
@@ -45,7 +44,7 @@ class KioskParticipantPolicy
      */
     public function delete(User $user, KioskParticipant $kioskParticipant): bool
     {
-        //
+        return $user->hasPermissionTo('delete kiosk participants');
     }
 
     /**
@@ -53,7 +52,7 @@ class KioskParticipantPolicy
      */
     public function restore(User $user, KioskParticipant $kioskParticipant): bool
     {
-        //
+        return false;
     }
 
     /**
@@ -61,6 +60,6 @@ class KioskParticipantPolicy
      */
     public function forceDelete(User $user, KioskParticipant $kioskParticipant): bool
     {
-        //
+        return false;
     }
 }

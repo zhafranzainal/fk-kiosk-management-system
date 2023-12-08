@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\BusinessType;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class BusinessTypePolicy
 {
@@ -13,7 +12,7 @@ class BusinessTypePolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return $user->hasPermissionTo('list businesstypes');
     }
 
     /**
@@ -21,7 +20,7 @@ class BusinessTypePolicy
      */
     public function view(User $user, BusinessType $businessType): bool
     {
-        //
+        return $user->hasPermissionTo('view businesstypes');
     }
 
     /**
@@ -29,7 +28,7 @@ class BusinessTypePolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->hasPermissionTo('create businesstypes');
     }
 
     /**
@@ -37,7 +36,7 @@ class BusinessTypePolicy
      */
     public function update(User $user, BusinessType $businessType): bool
     {
-        //
+        return $user->hasPermissionTo('update businesstypes');
     }
 
     /**
@@ -45,7 +44,7 @@ class BusinessTypePolicy
      */
     public function delete(User $user, BusinessType $businessType): bool
     {
-        //
+        return $user->hasPermissionTo('delete businesstypes');
     }
 
     /**
@@ -53,7 +52,7 @@ class BusinessTypePolicy
      */
     public function restore(User $user, BusinessType $businessType): bool
     {
-        //
+        return false;
     }
 
     /**
@@ -61,6 +60,6 @@ class BusinessTypePolicy
      */
     public function forceDelete(User $user, BusinessType $businessType): bool
     {
-        //
+        return false;
     }
 }
