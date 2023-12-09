@@ -52,7 +52,8 @@
                             <img src="{{ asset('assets/images/users/avatar-1.jpg') }}" alt="user-image" height="35"
                                 class="rounded-circle shadow-sm">
                             <div class="user-avatar">
-                                <span class="leftbar-user-name text-white" style="font-weight: bold">Ain Syazwani</span>
+                                <span class="leftbar-user-name text-white"
+                                    style="font-weight: bold">{{ Auth::user()->name }}</span>
                                 <p class="text-white font-14">Kiosk Participant</p>
                             </div>
                         </a>
