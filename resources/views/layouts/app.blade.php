@@ -54,7 +54,7 @@
                             <div class="user-avatar">
                                 <span class="leftbar-user-name text-white"
                                     style="font-weight: bold">{{ Auth::user()->name }}</span>
-                                <p class="text-white font-14">Kiosk Participant</p>
+                                <p class="text-white font-14">{{ auth()->user()->getRoleNames()->first() }}</p>
                             </div>
                         </a>
                     </div>
