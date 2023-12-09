@@ -26,13 +26,11 @@
 </head>
 
 @if (auth()->user()->getRoleNames()->first() == 'Admin')
-
-    <body class="loading"
-        data-layout-config='{"leftSideBarTheme":"light","layoutBoxed":false, "leftSidebarCondensed":false, "leftSidebarScrollable":false,"darkMode":false, "showRightSidebarOnStart": true}'>
-    @elseif(auth()->user()->getRoleNames()->first() == 'Kiosk Participant')
-
-        <body class="loading"
-            data-layout-config='{"leftSideBarTheme":"default","layoutBoxed":false,"leftSidebarCondensed":false,"leftSidebarScrollable":false,"darkMode":false,"showRightSidebarOnStart":true}'>
+    <body class="loading" data-layout-config='{"leftSideBarTheme":"light","layoutBoxed":false, "leftSidebarCondensed":false, "leftSidebarScrollable":false,"darkMode":false, "showRightSidebarOnStart": true}'>
+@elseif(auth()->user()->getRoleNames()->first() == 'Kiosk Participant')
+    <body class="loading" data-layout-config='{"leftSideBarTheme":"default","layoutBoxed":false,"leftSidebarCondensed":false,"leftSidebarScrollable":false,"darkMode":false,"showRightSidebarOnStart":true}'>
+@else
+    <body class="loading" data-layout-config='{"leftSideBarTheme":"dark","layoutBoxed":false, "leftSidebarCondensed":false, "leftSidebarScrollable":false,"darkMode":false, "showRightSidebarOnStart": true}'>
 @endif
 
 <div class="wrapper">
@@ -49,7 +47,7 @@
                     <img src="{{ asset('assets/images/logo_sm_dark.png') }}" alt="" height="16">
                 </span>
             </a>
-        @elseif(auth()->user()->getRoleNames()->first() == 'Kiosk Participant')
+        @else
             <a href="index.html" class="logo text-center logo-light">
                 <span class="logo-lg">
                     <img src="{{ asset('assets/images/logo.png') }}" alt="" height="16">
@@ -77,7 +75,7 @@
                                     style="font-weight: bold">{{ Auth::user()->name }}</span>
                                 <p class="text-muted font-14">{{ auth()->user()->getRoleNames()->first() }}</p>
                             </div>
-                        @elseif(auth()->user()->getRoleNames()->first() == 'Kiosk Participant')
+                        @else
                             <div class="user-avatar">
                                 <span class="leftbar-user-name text-white"
                                     style="font-weight: bold">{{ Auth::user()->name }}</span>
@@ -107,8 +105,10 @@
             {{-- Navigation Bar --}}
             @if (auth()->user()->getRoleNames()->first() == 'Admin')
                 <div class="navbar-custom">
-                @elseif(auth()->user()->getRoleNames()->first() == 'Kiosk Participant')
-                    <div class="navbar-custom" style="background-color: #CA3433;">
+            @elseif(auth()->user()->getRoleNames()->first() == 'Kiosk Participant')
+                <div class="navbar-custom" style="background-color: #CA3433;">
+            @else
+                <div class="navbar-custom" style="background-color: #007EA7;">
             @endif
 
             <ul class="list-unstyled topbar-right-menu float-right mb-0">
@@ -121,7 +121,7 @@
 
                         @if (auth()->user()->getRoleNames()->first() == 'Admin')
                             <i class="dripicons-bell noti-icon text-dark"></i>
-                        @elseif(auth()->user()->getRoleNames()->first() == 'Kiosk Participant')
+                        @else
                             <i class="dripicons-bell noti-icon text-white"></i>
                         @endif
 
