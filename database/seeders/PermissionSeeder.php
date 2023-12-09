@@ -130,29 +130,20 @@ class PermissionSeeder extends Seeder
             $role->givePermissionTo(Permission::whereIn('name', $flatPermissions)->get());
         }
 
-        $user = User::whereEmail('admin@example.com')->first();
-        if ($user) {
-            $user->assignRole('admin');
-        }
+        // Assign roles to each test user
+        $userRoles = [
+            'admin@example.com' => 'admin',
+            'pupuk@example.com' => 'pupuk-admin',
+            'participant@example.com' => 'kiosk-participant',
+            'technical@example.com' => 'technical-team',
+            'bursary@example.com' => 'fk-bursary',
+        ];
 
-        $user = User::whereEmail('pupuk@example.com')->first();
-        if ($user) {
-            $user->assignRole('pupuk-admin');
-        }
-
-        $user = User::whereEmail('participant@example.com')->first();
-        if ($user) {
-            $user->assignRole('kiosk-participant');
-        }
-
-        $user = User::whereEmail('technical@example.com')->first();
-        if ($user) {
-            $user->assignRole('technical-team');
-        }
-
-        $user = User::whereEmail('bursary@example.com')->first();
-        if ($user) {
-            $user->assignRole('fk-bursary');
+        foreach ($userRoles as $email => $role) {
+            $user = User::whereEmail($email)->first();
+            if ($user) {
+                $user->assignRole($role);
+            }
         }
     }
 }
