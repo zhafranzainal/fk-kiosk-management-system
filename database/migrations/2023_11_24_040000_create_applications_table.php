@@ -21,7 +21,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->date('start_date');
             $table->date('end_date');
-            $table->enum('status', ['Pending', 'Accepted', 'Rejected'])->default('Pending');
+            $table->enum('status', ['Pending', 'Approved', 'Rejected'])->default('Pending');
             $table->string('reason')->nullable();
 
             $table->timestamps();
