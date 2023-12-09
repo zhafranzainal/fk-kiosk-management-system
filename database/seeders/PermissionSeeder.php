@@ -134,7 +134,8 @@ class PermissionSeeder extends Seeder
         $testUsers = [
             'admin@example.com' => 'Admin',
             'pupuk@example.com' => 'PUPUK Admin',
-            'participant@example.com' => 'Kiosk Participant',
+            'vendor@example.com' => 'Kiosk Participant',
+            'student@example.com' => 'Kiosk Participant',
             'technical@example.com' => 'Technical Team',
             'bursary@example.com' => 'FK Bursary',
         ];

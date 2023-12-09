@@ -29,9 +29,14 @@ class UserSeeder extends Seeder
             'email' => 'pupuk@example.com',
         ]);
 
-        // Adding a kiosk participant user
+        // Adding a kiosk participant user (vendor)
         User::factory()->create([
-            'email' => 'participant@example.com',
+            'email' => 'vendor@example.com',
+        ]);
+
+        // Adding a kiosk participant user (student)
+        User::factory()->create([
+            'email' => 'student@example.com',
         ]);
 
         // Adding a technical team user
@@ -43,12 +48,5 @@ class UserSeeder extends Seeder
         User::factory()->create([
             'email' => 'bursary@example.com',
         ]);
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
-
-        User::factory(10)->create();
     }
 }
