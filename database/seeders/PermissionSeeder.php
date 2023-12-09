@@ -108,7 +108,7 @@ class PermissionSeeder extends Seeder
                 $manageApplicationPermissions,
                 $manageSalePermissions
             ),
-            'Pupuk Admin' => array_merge(
+            'PUPUK Admin' => array_merge(
                 $manageApplicationPermissions,
                 $manageTransactionPermissions,
                 $manageComplaintPermissions
@@ -133,7 +133,7 @@ class PermissionSeeder extends Seeder
         // Assign roles to each test user
         $userRoles = [
             'admin@example.com' => 'Admin',
-            'pupuk@example.com' => 'Pupuk Admin',
+            'pupuk@example.com' => 'PUPUK Admin',
             'participant@example.com' => 'Kiosk Participant',
             'technical@example.com' => 'Technical Team',
             'bursary@example.com' => 'FK Bursary',
