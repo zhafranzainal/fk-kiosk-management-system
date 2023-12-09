@@ -91,7 +91,7 @@ class PermissionSeeder extends Seeder
 
         // Create super admin role and assign all permissions
         $allPermissions = Permission::all();
-        $adminRole = Role::create(['name' => 'super-admin']);
+        $adminRole = Role::create(['name' => 'Super Admin']);
         $adminRole->givePermissionTo($allPermissions);
 
         $user = User::whereEmail('admin@admin.com')->first();
@@ -102,25 +102,25 @@ class PermissionSeeder extends Seeder
 
         // Define roles with respective permissions
         $rolesAndPermissions = [
-            'admin' => array_merge(
+            'Admin' => array_merge(
                 $manageUserPermissions,
                 $manageKioskPermissions,
                 $manageApplicationPermissions,
                 $manageSalePermissions
             ),
-            'pupuk-admin' => array_merge(
+            'Pupuk Admin' => array_merge(
                 $manageApplicationPermissions,
                 $manageTransactionPermissions,
                 $manageComplaintPermissions
             ),
-            'kiosk-participant' => array_merge(
+            'Kiosk Participant' => array_merge(
                 $manageApplicationPermissions,
                 $manageSalePermissions,
                 $manageTransactionPermissions,
                 $manageComplaintPermissions
             ),
-            'technical-team' => $manageComplaintPermissions,
-            'fk-bursary' => $manageTransactionPermissions,
+            'Technical Team' => $manageComplaintPermissions,
+            'FK Bursary' => $manageTransactionPermissions,
         ];
 
         // Create roles and assign permissions
@@ -132,11 +132,11 @@ class PermissionSeeder extends Seeder
 
         // Assign roles to each test user
         $userRoles = [
-            'admin@example.com' => 'admin',
-            'pupuk@example.com' => 'pupuk-admin',
-            'participant@example.com' => 'kiosk-participant',
-            'technical@example.com' => 'technical-team',
-            'bursary@example.com' => 'fk-bursary',
+            'admin@example.com' => 'Admin',
+            'pupuk@example.com' => 'Pupuk Admin',
+            'participant@example.com' => 'Kiosk Participant',
+            'technical@example.com' => 'Technical Team',
+            'bursary@example.com' => 'FK Bursary',
         ];
 
         foreach ($userRoles as $email => $role) {
