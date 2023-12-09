@@ -13,11 +13,41 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // Adding an admin user
+        // Adding a super admin user for the purpose of testing all modules
         User::factory()->create([
             'name' => 'Super Admin',
             'email' => 'admin@admin.com',
             'password' => Hash::make('admin'),
+        ]);
+
+        // Adding an admin user
+        User::factory()->create([
+            'name' => 'Admin',
+            'email' => 'admin@example.com',
+        ]);
+
+        // Adding a PUPUK admin user
+        User::factory()->create([
+            'name' => 'PUPUK Admin',
+            'email' => 'pupuk@example.com',
+        ]);
+
+        // Adding a kiosk participant user
+        User::factory()->create([
+            'name' => 'Kiosk Participant',
+            'email' => 'participant@example.com',
+        ]);
+
+        // Adding a technical team user
+        User::factory()->create([
+            'name' => 'Technical Team',
+            'email' => 'technical@example.com',
+        ]);
+
+        // Adding an FK bursary user
+        User::factory()->create([
+            'name' => 'FK Bursary',
+            'email' => 'bursary@example.com',
         ]);
 
         User::factory()->create([
