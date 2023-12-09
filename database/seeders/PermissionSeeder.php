@@ -131,7 +131,7 @@ class PermissionSeeder extends Seeder
         }
 
         // Assign roles to each test user
-        $userRoles = [
+        $testUsers = [
             'admin@example.com' => 'Admin',
             'pupuk@example.com' => 'PUPUK Admin',
             'participant@example.com' => 'Kiosk Participant',
@@ -139,7 +139,7 @@ class PermissionSeeder extends Seeder
             'bursary@example.com' => 'FK Bursary',
         ];
 
-        foreach ($userRoles as $email => $role) {
+        foreach ($testUsers as $email => $role) {
             $user = User::whereEmail($email)->first();
             if ($user) {
                 $user->assignRole($role);
