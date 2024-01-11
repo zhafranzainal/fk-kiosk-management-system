@@ -35,6 +35,8 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::resource('kiosks', KioskController::class);
     Route::resource('applications', ApplicationController::class);
     Route::resource('sales', SaleController::class);
+    Route::get('/sales/show/{id}', [SaleController::class, 'showPupuk'])->name('sales.showPupuk');
+    Route::put('/sales/show/{id}', [SaleController::class, 'updatePupuk'])->name('sales.updatePupuk');
     Route::resource('transactions', TransactionController::class);
     Route::resource('complaints', ComplaintController::class);
 });

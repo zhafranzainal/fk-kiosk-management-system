@@ -18,7 +18,7 @@ return new class extends Migration
             $table->float('monthly_revenue');
             $table->float('cost_of_goods_sold');
             $table->float('profit');
-
+            $table->enum('status', ['Active', 'Warning']);
             $table->timestamps();
             $table->softDeletes();
         });
