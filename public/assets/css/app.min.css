@@ -14931,6 +14931,17 @@ input[data-switch=dark]:checked+label {
     color: #CB1212
 }
 
+.table .action-icon-warning {
+    color: #FF8A01;
+    font-size: 1.2rem;
+    display: inline-block;
+    padding: 0 3px
+}
+
+.table .action-icon-warning:hover {
+    color: #FF8A01
+}
+
 .table-nowrap td,
 .table-nowrap th {
     white-space: nowrap

@@ -39,4 +39,9 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::put('/sales/show/{id}', [SaleController::class, 'updatePupuk'])->name('sales.updatePupuk');
     Route::resource('transactions', TransactionController::class);
     Route::resource('complaints', ComplaintController::class);
+
+ 
+    Route::post('/complaints/assign-to/{complaint}', [ComplaintController::class, 'assignTo'])->name('complaints.assignTo');
+    Route::post('/complaints/update-status/{complaint}', [ComplaintController::class, 'updateStatus'])->name('complaints.updateStatus');
+
 });

@@ -22,7 +22,7 @@ class ComplaintFactory extends Factory
             'user_id' => KioskParticipant::inRandomOrder()->pluck('id')->first(),
             'description' => $this->faker->sentence(),
             'assign_to' => $this->faker->name(),
-            'status' => 'Pending',
+            'status' => 'In Progress',
         ];
     }
 }
