@@ -31,8 +31,13 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
 
     Route::resource('users', UserController::class);
     Route::resource('kiosks', KioskController::class);
+
     Route::resource('applications', ApplicationController::class);
+    Route::put('/applications/{application}/updateStatus', [ApplicationController::class, 'updateStatus'])->name('applications.updateStatus');
+
     Route::resource('sales', SaleController::class);
+    Route::get('/sales/show/{id}', [SaleController::class, 'showPupuk'])->name('sales.showPupuk');
+    Route::put('/sales/show/{id}', [SaleController::class, 'updatePupuk'])->name('sales.updatePupuk');
 
     Route::get('payments/bills/', [PaymentController::class, 'indexBill'])->name('payments.index-bill');;
     Route::get('payments/bills/{transaction}', [PaymentController::class, 'showBill'])->name('payments.show-bill');;
@@ -40,4 +45,6 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::get('payments/transactions/{transaction}', [PaymentController::class, 'showTransaction'])->name('payments.show-transaction');;
 
     Route::resource('complaints', ComplaintController::class);
+    Route::post('/complaints/assign-to/{complaint}', [ComplaintController::class, 'assignTo'])->name('complaints.assignTo');
+    Route::post('/complaints/update-status/{complaint}', [ComplaintController::class, 'updateStatus'])->name('complaints.updateStatus');
 });
