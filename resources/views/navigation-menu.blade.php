@@ -43,7 +43,7 @@
 
 @can('view-any', App\Models\Transaction::class)
     <li class="side-nav-item">
-        <a href="{{ route('transactions.index') }}" class="side-nav-link">
+        <a href="{{ route('payments.index-bill') }}" class="side-nav-link">
             <i class="uil-money-stack"></i>
             <span> Kiosk Payments </span>
         </a>
