@@ -6,12 +6,19 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <!--
+
                         @if ($message = session()->has('success'))
-<div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
                                 <p class="text-black mb-0">{{ session()->get('success') }}</p>
                             </div>
-@endif-->
+
+                            <!-- Add the following JavaScript to auto-dismiss the alert after 3 seconds -->
+                            <script>
+                                setTimeout(function() {
+                                    $('.alert').alert('close');
+                                }, 3000); // 3000 milliseconds = 3 seconds
+                            </script>
+                        @endif
                         <div class="row mt-2">
                             <h4 class="mx-2 header-title">Kiosk Complaint</h4>
                             @if (auth()->user()->getRoleNames()->first() == 'Kiosk Participant')
@@ -52,7 +59,8 @@
     }) as $complaint)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>FKK{{ $complaint->KioskParticipant->kiosk_id }}</td>
+                                        <td>FKK{{ str_pad($complaint->kioskParticipant->kiosk_id, 2, '0', STR_PAD_LEFT) }}
+                                        </td>
                                         <td>{{ $complaint->description }}</td>
                                         <td>{{ $complaint->created_at->format('d-m-Y') }}</td>
                                         @if (auth()->user()->getRoleNames()->first() == 'Technical Team')
@@ -79,11 +87,11 @@
                                         @if (auth()->user()->getRoleNames()->first() == 'Kiosk Participant')
                                             <td>
                                                 <!-- View Page-->
-                                                <a href="{{ route('complaints.show', ['complaint' => $complaint['id']]) }}"
+                                                <a href="{{ route('complaints.show', $complaint->id) }}"
                                                     class="action-icon-info"><i class="mdi mdi-eye"></i></a>
                                                 @if ($complaint->status == 'Pending')
                                                     <!-- Edit Page-->
-                                                    <a href="{{ route('complaints.edit', ['complaint' => $complaint['id']]) }}"
+                                                    <a href="{{ route('complaints.edit', $complaint->id) }}"
                                                         class="action-icon-success"><i
                                                             class="mdi mdi-square-edit-outline"></i></a>
                                                     <!-- Delete -->
@@ -174,6 +182,7 @@
                                                     <form method="POST"
                                                         action="{{ route('complaints.destroy', $complaint->id) }}">
                                                         @csrf
+                                                        @method('DELETE')
                                                         <button type="submit" class="btn btn-danger btn-sm">Yes,
                                                             delete</button>
                                                     </form>
@@ -200,7 +209,7 @@
                                                                 <label for="name">Kiosk Tenant</label>
                                                                 <input type="text" id="name"
                                                                     class="form-control"
-                                                                    value="{{ $complaint->User->name }}" readonly>
+                                                                    value="{{ $complaint->user->name }}" readonly>
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-6">
@@ -208,7 +217,7 @@
                                                                 <label for="simpleinput">Kiosk Number</label>
                                                                 <input type="text" id="simpleinput"
                                                                     class="form-control"
-                                                                    value="FKK{{ $complaint->KioskParticipant->kiosk_id }}"
+                                                                    value="FKK{{ $complaint->kioskParticipant->kiosk_id }}"
                                                                     readonly>
                                                             </div>
                                                         </div>
@@ -234,7 +243,7 @@
                                                                 <label for="simpleinput">No. Telephone</label>
                                                                 <input type="text" id="simpleinput"
                                                                     class="form-control"
-                                                                    value="{{ $complaint->User->mobile_no }}"
+                                                                    value="{{ $complaint->user->mobile_no }}"
                                                                     readonly>
                                                             </div>
                                                         </div>
@@ -310,7 +319,7 @@
                                                                     <label for="simpleinput">Kiosk Tenant</label>
                                                                     <input type="text" id="simpleinput"
                                                                         class="form-control"
-                                                                        value="{{ $complaint->User->name }}" readonly>
+                                                                        value="{{ $complaint->user->name }}" readonly>
                                                                 </div>
                                                             </div>
                                                             <div class="col-lg-12">
@@ -318,7 +327,7 @@
                                                                     <label for="simpleinput">Kiosk Number</label>
                                                                     <input type="text" id="simpleinput"
                                                                         class="form-control"
-                                                                        value="FKK{{ $complaint->KioskParticipant->kiosk_id }}"
+                                                                        value="FKK{{ $complaint->kioskParticipant->kiosk_id }}"
                                                                         readonly>
                                                                 </div>
                                                             </div>
@@ -358,4 +367,5 @@
             </div> <!-- end col -->
         </div> <!-- end row -->
     </div>
+
 </x-app-layout>

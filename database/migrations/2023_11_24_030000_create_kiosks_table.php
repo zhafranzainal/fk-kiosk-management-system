@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('location');
             $table->enum('suggested_action', ['No Action', 'Terminate', 'Suspend', 'Reassign'])->default('No Action');
-            $table->string('comment');
+            $table->string('comment')->nullable();
             $table->enum('status', ['Inactive', 'Active', 'Warning', 'Repair'])->default('Inactive');
 
             $table->timestamps();

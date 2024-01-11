@@ -12,20 +12,21 @@
                         <p class="text-muted font-13 mb-4">
                             Update your complaint here. We are ready to help!
                         </p>
-                        <form role="form" method="POST" action={{ route('complaints.update', ['complaint' => $complaint['id']]) }}>
+                        <form role="form" method="POST" action={{ route('complaints.update', $complaint->id) }}>
                             @csrf
+                            @method('PUT')
                             <div class="row justify-content-center align-items-center g-2">
                                 <div class="col-lg-6">
                                     <div class="form-group mb-3">
                                         <label for="kiosk-tenant">Kiosk Tenant</label>
-                                        <input type="text" value="{{ $complaint->User->name }}" class="form-control"
+                                        <input type="text" value="{{ $complaint->user->name }}" class="form-control"
                                             readonly>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="form-group mb-3">
                                         <label for="kiosk-number">Kiosk Number</label>
-                                        <input type="text" value="FKK{{ $complaint->KioskParticipant->kiosk_id }}"
+                                        <input type="text" value="FKK{{ str_pad($complaint->kioskParticipant->kiosk_id, 2, '0', STR_PAD_LEFT) }}" 
                                             class="form-control" readonly>
                                     </div>
                                 </div>
@@ -38,7 +39,7 @@
                                 <div class="col-lg-6">
                                     <div class="form-group mb-3">
                                         <label for="phone">No. Telephone</label>
-                                        <input type="text" value="{{ $complaint->User->mobile_no }}"
+                                        <input type="text" value="{{ $complaint->user->mobile_no }}"
                                             class="form-control" readonly>
                                     </div>
                                 </div>

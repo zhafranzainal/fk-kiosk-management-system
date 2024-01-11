@@ -50,28 +50,28 @@
 
                                             switch ($status) {
                                                 case 'inactive':
-                                                    $circleColor = 'noti-icon-badge bg-success';
-                                                    $displayText = 'Available';
+                                                    $circleColor = 'badge badge-secondary badge-pill';
+                                                    $displayText = 'Unavailable';
                                                     break;
                                                 case 'active':
                                                 case 'warning':
-                                                    $circleColor = 'noti-icon-badge bg-secondary';
-                                                    $displayText = 'Unavailable';
+                                                    $circleColor = 'badge badge-success badge-pill';
+                                                    $displayText = 'Availabe';
                                                     break;
                                                 case 'repair':
-                                                    $circleColor = 'noti-icon-badge bg-danger';
+                                                    $circleColor = 'badge badge-danger badge-pill';
                                                     $displayText = 'Repair';
                                                     break;
                                                 default:
-                                                    $circleColor = 'noti-icon-badge bg-white';
+                                                    $circleColor = 'badge badge-white badge-pill';
                                                     $displayText = '-';
                                                     break;
                                             }
+
                                         @endphp
 
                                         <div class="col-md-1 col-12">
-                                            <span class="{{ $circleColor }}"></span>
-                                            <h5 class="ml-1">{{ $displayText }}</h5>
+                                            <span class="{{ $circleColor }}">{{ $displayText }}</span>
                                         </div>
 
                                     </td>
@@ -80,243 +80,230 @@
 
                                         @can('update', $kiosk)
                                             <a href="javascript:void(0);" class="action-icon-success" data-toggle="modal"
-                                                data-target="#bs-edit-modal-lg">
+                                                data-target="#bs-edit-modal-lg{{ $kiosk->id }}">
                                                 <i class="mdi mdi-square-edit-outline"></i>
                                             </a>
                                         @endcan
 
                                         @can('view', $kiosk)
                                             <a href="javascript:void(0);" class="action-icon-info" data-toggle="modal"
-                                                data-target="#bs-view-modal-lg">
+                                                data-target="#bs-view-modal-lg{{ $kiosk->id }}">
                                                 <i class="mdi mdi-eye"></i>
                                             </a>
                                         @endcan
 
-                                        @can('delete', $kiosk)
-                                            <a href="javascript:void(0);" class="action-icon-danger" data-toggle="modal"
-                                                data-target="#bs-danger-modal-sm">
-                                                <i class="mdi mdi-delete"></i>
-                                            </a>
-                                        @endcan
-
+                                        @if ($kiosk->status != 'Inactive' && $kiosk->status != 'Repair')
+                                            @can('delete', $kiosk)
+                                                <a href="javascript:void(0);" class="action-icon-danger" data-toggle="modal"
+                                                    data-target="#bs-danger-modal-sm{{ $kiosk->id }}">
+                                                    <i class="mdi mdi-delete"></i>
+                                                </a>
+                                            @endcan
+                                        @endif
                                     </td>
 
                                 </tr>
+
+                                <!-- Edit Modal -->
+                                <div class="modal fade" id="bs-edit-modal-lg{{ $kiosk->id }}" tabindex="-1"
+                                    role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+
+                                            <div class="modal-header">
+                                                <h4 class="modal-title" id="myLargeModalLabel">Update Kiosk</h4>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-hidden="true">
+                                                    ×
+                                                </button>
+                                            </div>
+
+                                            <div class="modal-body">
+                                                <form method="POST" action="{{ route('kiosks.update', $kiosk->id) }}">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <div class="row justify-content-center align-items-center g-2">
+
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group mb-3">
+                                                                <label for="simpleinput">Kiosk Number</label>
+                                                                <input type="text" name="id"
+                                                                    class="form-control"
+                                                                    value="FKK{{ str_pad($kiosk->id, 2, '0', STR_PAD_LEFT) }}"
+                                                                    readonly>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group mb-3">
+                                                                <label for="simpleinput">Kiosk Status</label>
+                                                                <input type="text" name="status"
+                                                                    class="form-control" value="{{ $kiosk->status }}"
+                                                                    readonly>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group mb-3">
+                                                                <label for="simpleinput">Kiosk Name</label>
+                                                                <input type="text" name="name"
+                                                                    class="form-control" value="{{ $kiosk->name }}">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group mb-3">
+                                                                <label for="simpleinput">Business Type</label>
+                                                                <select class="form-control" name="business_type_id">
+                                                                    <option value="" disabled selected>Please
+                                                                        Choose</option>
+
+                                                                    @foreach ($businessTypes as $id => $name)
+                                                                        <option
+                                                                            @if ($kiosk->business_type_id == $id) selected @endif
+                                                                            value="{{ $id }}">
+                                                                            {{ $name }}</option>
+                                                                    @endforeach
+
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-lg-12">
+                                                            <div class="form-group mb-3">
+                                                                <label for="example-textarea">Kiosk Location</label>
+                                                                <textarea class="form-control" name="location" rows="5">{{ $kiosk->location }}</textarea>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-light"
+                                                    data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-danger">Save changes</button>
+                                            </div>
+                                        </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <!-- View modal -->
+                                <div class="modal fade" id="bs-view-modal-lg{{ $kiosk->id }}" tabindex="-1"
+                                    role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+
+                                            <div class="modal-header">
+                                                <h4 class="modal-title" id="myLargeModalLabel">View Kiosk</h4>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-hidden="true">
+                                                    ×
+                                                </button>
+                                            </div>
+
+                                            <div class="modal-body">
+                                                <form>
+                                                    <div class="row justify-content-center align-items-center g-2">
+
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group mb-3">
+                                                                <label for="simpleinput">Kiosk Number</label>
+                                                                <input type="text" name="id"
+                                                                    class="form-control"
+                                                                    value="FKF{{ $kiosk->id }}" readonly>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group mb-3">
+                                                                <label for="simpleinput">Kiosk Status</label>
+                                                                <input type="text" name="status"
+                                                                    class="form-control" value="{{ $kiosk->status }}"
+                                                                    readonly>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group mb-3">
+                                                                <label for="simpleinput">Kiosk Name</label>
+                                                                <input type="text" name="name"
+                                                                    class="form-control" value="{{ $kiosk->name }}"
+                                                                    readonly>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group mb-3">
+                                                                <label for="simpleinput">Business Type</label>
+                                                                <input type="text" name="business_type_id"
+                                                                    class="form-control"
+                                                                    value="{{ $kiosk->BusinessType->name }}"
+                                                                    readonly>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-lg-12">
+                                                            <div class="form-group mb-3">
+                                                                <label for="example-textarea">Kiosk Location</label>
+                                                                <textarea class="form-control" name="location" rows="5" readonly>{{ $kiosk->location }}</textarea>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </form>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Delete modal -->
+                                <div class="modal fade" id="bs-danger-modal-sm{{ $kiosk->id }}" tabindex="-1" role="dialog"
+                                    aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-sm modal-dialog-centered">
+                                        <div class="modal-content">
+
+                                            <div class="modal-header">
+                                                <h4 class="font-14" id="mySmallModalLabel">Delete Data</h4>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-hidden="true">
+                                                    ×
+                                                </button>
+                                            </div>
+
+                                            <div class="modal-body">
+                                                <p>Are you sure want to delete this data?</p>
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-light btn-sm"
+                                                    data-dismiss="modal">
+                                                    No, cancel
+                                                </button>
+                                                <form method="POST" action="{{ route('kiosks.destroy', $kiosk->id) }}" >
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger btn-sm">
+                                                        Yes, delete
+                                                    </button>
+                                                </form>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
                             @endforeach
                         </tbody>
 
                     </table>
 
                 </div>
-
-                <!-- Edit Modal -->
-                <div class="modal fade" id="bs-edit-modal-lg" tabindex="-1" role="dialog"
-                    aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-
-                            <div class="modal-header">
-                                <h4 class="modal-title" id="myLargeModalLabel">Edit modal</h4>
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                                    ×
-                                </button>
-                            </div>
-
-                            <div class="modal-body">
-                                <form>
-                                    <div class="row justify-content-center align-items-center g-2">
-
-                                        <div class="col-lg-6">
-                                            <div class="form-group mb-3">
-                                                <label for="simpleinput">Text</label>
-                                                <input type="text" id="simpleinput" class="form-control">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-6">
-                                            <div class="form-group mb-3">
-                                                <label for="example-email">Email</label>
-                                                <input type="email" id="example-email" name="example-email"
-                                                    class="form-control" placeholder="Email">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-6">
-                                            <div class="form-group mb-3">
-                                                <label for="example-password">Password</label>
-                                                <input type="password" id="example-password" class="form-control"
-                                                    value="password">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-6">
-                                            <div class="form-group mb-3">
-                                                <label for="password">Show/Hide Password</label>
-                                                <div class="input-group input-group-merge">
-                                                    <input type="password" id="password" class="form-control"
-                                                        placeholder="Enter your password">
-                                                    <div class="input-group-append" data-password="false">
-                                                        <div class="input-group-text">
-                                                            <span class="password-eye"></span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-6">
-                                            <div class="form-group mb-3">
-                                                <label for="example-palaceholder">Placeholder</label>
-                                                <input type="text" id="example-palaceholder" class="form-control"
-                                                    placeholder="placeholder">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-6">
-                                            <div class="form-group mb-3">
-                                                <label for="example-readonly">Readonly</label>
-                                                <input type="text" id="example-readonly" class="form-control"
-                                                    readonly="" value="Readonly value">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-12">
-                                            <div class="form-group mb-3">
-                                                <label for="example-textarea">Text area</label>
-                                                <textarea class="form-control" id="example-textarea" rows="5"></textarea>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </form>
-                            </div>
-
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-danger">Save changes</button>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
-                <!-- View modal -->
-                <div class="modal fade" id="bs-view-modal-lg" tabindex="-1" role="dialog"
-                    aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-
-                            <div class="modal-header">
-                                <h4 class="modal-title" id="myLargeModalLabel">View modal</h4>
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                                    ×
-                                </button>
-                            </div>
-
-                            <div class="modal-body">
-                                <form>
-                                    <div class="row justify-content-center align-items-center g-2">
-
-                                        <div class="col-lg-6">
-                                            <div class="form-group mb-3">
-                                                <label for="simpleinput">Text</label>
-                                                <input type="text" id="simpleinput" class="form-control">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-6">
-                                            <div class="form-group mb-3">
-                                                <label for="example-email">Email</label>
-                                                <input type="email" id="example-email" name="example-email"
-                                                    class="form-control" placeholder="Email">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-6">
-                                            <div class="form-group mb-3">
-                                                <label for="example-password">Password</label>
-                                                <input type="password" id="example-password" class="form-control"
-                                                    value="password">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-6">
-                                            <div class="form-group mb-3">
-                                                <label for="password">Show/Hide Password</label>
-                                                <div class="input-group input-group-merge">
-                                                    <input type="password" id="password" class="form-control"
-                                                        placeholder="Enter your password">
-                                                    <div class="input-group-append" data-password="false">
-                                                        <div class="input-group-text">
-                                                            <span class="password-eye"></span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-6">
-                                            <div class="form-group mb-3">
-                                                <label for="example-palaceholder">Placeholder</label>
-                                                <input type="text" id="example-palaceholder" class="form-control"
-                                                    placeholder="placeholder">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-6">
-                                            <div class="form-group mb-3">
-                                                <label for="example-readonly">Readonly</label>
-                                                <input type="text" id="example-readonly" class="form-control"
-                                                    readonly="" value="Readonly value">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-12">
-                                            <div class="form-group mb-3">
-                                                <label for="example-textarea">Text area</label>
-                                                <textarea class="form-control" id="example-textarea" rows="5"></textarea>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </form>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Delete modal -->
-                <div class="modal fade" id="bs-danger-modal-sm" tabindex="-1" role="dialog"
-                    aria-labelledby="mySmallModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-sm modal-dialog-centered">
-                        <div class="modal-content">
-
-                            <div class="modal-header">
-                                <h4 class="font-14" id="mySmallModalLabel">Delete Data</h4>
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                                    ×
-                                </button>
-                            </div>
-
-                            <div class="modal-body">
-                                <p>Are you sure want to delete this data?</p>
-                            </div>
-
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-light btn-sm" data-dismiss="modal">
-                                    No, cancel
-                                </button>
-                                <button type="button" class="btn btn-danger btn-sm">
-                                    Yes, delete
-                                </button>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
             </div>
+
         </div>
     </div>
 

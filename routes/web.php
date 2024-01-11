@@ -36,13 +36,10 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::resource('applications', ApplicationController::class);
     Route::resource('sales', SaleController::class);
     Route::resource('transactions', TransactionController::class);
-    
-    
     Route::resource('complaints', ComplaintController::class);
-    Route::post('/complaints/store', [ComplaintController::class, 'store'])->name('complaints.store');
-    Route::post('/complaints/update/{complaint}', [ComplaintController::class, 'update'])->name('complaints.update');
+
+ 
     Route::post('/complaints/assign-to/{complaint}', [ComplaintController::class, 'assignTo'])->name('complaints.assignTo');
     Route::post('/complaints/update-status/{complaint}', [ComplaintController::class, 'updateStatus'])->name('complaints.updateStatus');
-    Route::post('/complaints/destroy/{complaint}', [ComplaintController::class, 'destroy'])->name('complaints.destroy');
 
 });

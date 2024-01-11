@@ -32,7 +32,7 @@
                             </div>
                         </div>
                         <h6>Kiosk Number</h6>
-                        <p class="text-muted font-12 font-weight-bold">FKK{{ $complaint->KioskParticipant->kiosk_id }}
+                        <p class="text-muted font-12 font-weight-bold">FKK{{ str_pad($complaint->kioskParticipant->kiosk_id, 2, '0', STR_PAD_LEFT) }}
                         </p>
                     </div> <!-- end card-body-->
                 </div><!-- end card-->
@@ -47,7 +47,7 @@
                         <div class="row justify-content-center align-items-center g-2 mt-4">
                             <div class="col-lg-6">
                                 <label for="example-week">Kiosk Tenant</label>
-                                <p>{{ $complaint->User->name }}</p>
+                                <p>{{ $complaint->user->name }}</p>
                             </div>
                             <div class="col-lg-6">
                                 <label for="example-week">Kiosk Complaint</label>
@@ -55,7 +55,7 @@
                             </div>
                             <div class="col-lg-6 mt-2">
                                 <label for="example-week">No. Telephone</label>
-                                <p>{{ $complaint->User->mobile_no }}</p>
+                                <p>{{ $complaint->user->mobile_no }}</p>
                             </div>
                             <div class="col-lg-6 mt-2">
                                 <label for="example-week">Complaint Description</label>

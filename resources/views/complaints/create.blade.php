@@ -25,7 +25,7 @@
                                 <div class="col-lg-6">
                                     <div class="form-group mb-3">
                                         <label for="kiosk-number">Kiosk Number</label>
-                                        <input type="text" id="kiosk-number" value="FKK{{ $kiosks->kiosk_id }}"
+                                        <input type="text" id="kiosk-number" value="FKK{{ str_pad($kiosks->kiosk_id, 2, '0', STR_PAD_LEFT) }}"
                                             class="form-control" readonly>
                                     </div>
                                 </div>
