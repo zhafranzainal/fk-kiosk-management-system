@@ -185,6 +185,11 @@ class ApplicationController extends Controller
             $application->reason = $request->input('reason');
         }
 
+        if ($request->input('status') === 'Approved') {
+            $application->kiosk->status = 'Active';
+            $application->kiosk->save();
+        }
+
         $application->save();
 
         return redirect()->route('applications.index')->with('success', 'Application status updated');

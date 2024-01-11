@@ -34,8 +34,15 @@
                             name="kioskNumber" id="kioskNumber" required>
                             <option value="">Select Kiosk</option>
                             @foreach ($kiosks as $kiosk)
-                                <option data-business-type-id="{{$kiosk->business_type_id}}" value="{{ $kiosk->id }}">FKK{{ str_pad($kiosk->id, 2, '0', STR_PAD_LEFT) }}
-                                </option>
+                                @if ($kiosk->status != 'Inactive')
+                                    <option data-business-type-id="{{ $kiosk->business_type_id }}"
+                                        value="{{ $kiosk->id }}" disabled>FKK{{ str_pad($kiosk->id, 2, '0', STR_PAD_LEFT) }}
+                                    </option>
+                                @else
+                                    <option data-business-type-id="{{ $kiosk->business_type_id }}"
+                                        value="{{ $kiosk->id }}">FKK{{ str_pad($kiosk->id, 2, '0', STR_PAD_LEFT) }}
+                                    </option>
+                                @endif
                             @endforeach
                         </select>
                     </div>
@@ -67,8 +74,8 @@
                         <div class="form-group col-3 mb-3">
                             <label for="semester">Semester</label>
                             <input type="number" class="form-control" name="semester" id="semester"
-                                placeholder="Semester" value="{{ $user->kioskParticipant->student->semester }}" required
-                                autofocus>
+                                placeholder="Semester" value="{{ $user->kioskParticipant->student->semester }}"
+                                required autofocus>
                         </div>
                         <div class="form-group col-6 mb-3">
                             <label for="businessType">Business Type</label>
@@ -125,8 +132,8 @@
 
                 {{-- Button --}}
                 <div>
-                    <button type="button" onclick="window.location.href='{{route('applications.index')}}'" class="border-0 rounded-lg mr-5"
-                        style="width: 100px; height: 38px">Cancel</button>
+                    <button type="button" onclick="window.location.href='{{ route('applications.index') }}'"
+                        class="border-0 rounded-lg mr-5" style="width: 100px; height: 38px">Cancel</button>
                     <button type="submit" class="border-0 rounded-lg text-white"
                         style="width: 100px; height: 38px; background-color: #CA3433;">Apply</button>
                 </div>
@@ -136,7 +143,7 @@
 </x-app-layout>
 
 <script>
-    $(document).ready(function (){
+    $(document).ready(function() {
         $('#kioskNumber').change(function() {
             var businessId = $(this).find(':selected').data('business-type-id');
             $('#businessType').val(businessId);

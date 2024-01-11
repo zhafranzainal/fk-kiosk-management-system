@@ -32,7 +32,7 @@
                                 value="{{ $application->user->name }}" readonly>
                         </div>
 
-                        @if ((auth()->user()->hasRole('Kiosk Participant') && auth()->user()->kioskParticipant->student))
+                        @if (auth()->user()->hasRole('Kiosk Participant') && auth()->user()->kioskParticipant->student)
                             <div class="form-group mb-3">
                                 <label for="course">Course</label>
                                 <input type="text" name="course" class="form-control" placeholder="Course"
@@ -59,10 +59,17 @@
                                 value="{{ $application->kiosk->id }}" required>
                                 <option value="">Select Kiosk</option>
                                 @foreach ($kiosks as $kiosk)
-                                    <option data-business-type-id="{{ $kiosk->business_type_id }}"
-                                        value="{{ $kiosk->id }}" @if ($kiosk->id == $application->kiosk_id) selected @endif>
-                                        FKK{{ str_pad($kiosk->id, 2, '0', STR_PAD_LEFT) }}
-                                    </option>
+                                    @if ($kiosk->status != 'Inactive')
+                                        <option data-business-type-id="{{ $kiosk->business_type_id }}"
+                                            value="{{ $kiosk->id }}" disabled @if ($kiosk->id == $application->kiosk_id) selected @endif>
+                                            FKK{{ str_pad($kiosk->id, 2, '0', STR_PAD_LEFT) }}
+                                        </option>
+                                    @else
+                                        <option data-business-type-id="{{ $kiosk->business_type_id }}"
+                                            value="{{ $kiosk->id }}" @if ($kiosk->id == $application->kiosk_id) selected @endif>
+                                            FKK{{ str_pad($kiosk->id, 2, '0', STR_PAD_LEFT) }}
+                                        </option>
+                                    @endif
                                 @endforeach
                             </select>
                         </div>
