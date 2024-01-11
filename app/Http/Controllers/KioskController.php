@@ -14,9 +14,10 @@ class KioskController extends Controller
     public function index(Request $request)
     {
         $this->authorize('view-any', Kiosk::class);
+        $businessTypes = BusinessType::pluck('name', 'id');
 
         $kiosks = Kiosk::All();
-        return view('kiosks.index', compact('kiosks'));
+        return view('kiosks.index', compact('kiosks', 'businessTypes'));
     }
 
     /**
@@ -36,38 +37,41 @@ class KioskController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Create a new Kiosk instance and fill it with the validated data
+        $kiosk = new Kiosk();
+        $kiosk->name = $request->input('name');
+        $kiosk->business_type_id = $request->input('business_type_id');
+        $kiosk->status = $request->input('status');
+        $kiosk->location = $request->input('location');
+
+        // Save the Kiosk instance to the database
+        $kiosk->save();
+        return redirect()->route('kiosks.index')->with('success', 'Kiosk Inserted Successfully');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Kiosk $kiosk)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Kiosk $kiosk)
-    {
-        //
-    }
-
+ 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Kiosk $kiosk)
+    public function update(Request $request, $id)
     {
-        //
+        $kiosk = Kiosk::find( $id );
+        $kiosk->name = $request->input('name');
+        $kiosk->business_type_id = $request->input('business_type_id');
+        $kiosk->status = $request->input('status');
+        $kiosk->location = $request->input('location');
+        $kiosk->save();
+        return redirect()->route('kiosks.index')->with('success', 'Kiosk Updated Successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Kiosk $kiosk)
+    public function destroy($id)
     {
-        //
+        $kiosk = Kiosk::find($id);
+        $kiosk ->delete($kiosk);
+        return redirect()->route('kiosks.index')
+            ->with('success', "Kiosk Deleted Successfully!");
     }
 }

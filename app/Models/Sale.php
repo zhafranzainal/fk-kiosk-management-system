@@ -18,6 +18,7 @@ class Sale extends Model
         'monthly_revenue',
         'cost_of_goods_sold',
         'profit',
+        'status',
     ];
 
     public function kioskParticipant()

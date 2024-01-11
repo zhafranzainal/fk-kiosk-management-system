@@ -106,12 +106,13 @@ class PermissionSeeder extends Seeder
                 $manageUserPermissions,
                 $manageKioskPermissions,
                 $manageApplicationPermissions,
-                $manageSalePermissions
+                
             ),
             'PUPUK Admin' => array_merge(
                 $manageApplicationPermissions,
                 $manageTransactionPermissions,
-                $manageComplaintPermissions
+                $manageComplaintPermissions,
+                $manageSalePermissions
             ),
             'Kiosk Participant' => array_merge(
                 $manageApplicationPermissions,

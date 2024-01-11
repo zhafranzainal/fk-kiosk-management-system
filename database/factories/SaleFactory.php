@@ -22,6 +22,7 @@ class SaleFactory extends Factory
             'monthly_revenue' => $this->faker->randomFloat(2, 500, 10000),
             'cost_of_goods_sold' => $this->faker->randomFloat(2, 500, 10000),
             'profit' => $this->faker->randomFloat(2, 500, 10000),
+            'status' => 'Active',
         ];
     }
 }
