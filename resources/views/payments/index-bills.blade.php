@@ -39,7 +39,7 @@
                                 <td>{{ $billName }}</td>
                                 <td>{{ $billpaymentInvoiceNo }}</td>
                                 <td>FKK01</td>
-                                <td>{{ $billStatus }}</td>
+                                <td>{{ $convertedBillStatus }}</td>
                                 <td>25 Sep - 24 Oct</td>
                                 <td>{{ $billpaymentAmount }}</td>
 

@@ -30,10 +30,27 @@ class PaymentController extends Controller
 
         $billName = $decoded_result[0]['billName'];
         $billpaymentInvoiceNo = $decoded_result[0]['billpaymentInvoiceNo'];
+
         $billStatus = $decoded_result[0]['billStatus'];
+
+        // Convert bill status to its corresponding value
+        switch ($billStatus) {
+            case 1:
+                $convertedBillStatus = 'Success';
+                break;
+            case 2:
+                $convertedBillStatus = 'Pending';
+                break;
+            case 3:
+                $convertedBillStatus = 'Fail';
+                break;
+            default:
+                $convertedBillStatus = 'Unknown';
+        }
+
         $billpaymentAmount = $decoded_result[0]['billpaymentAmount'];
 
-        return view('payments.index-bills', compact('billName', 'billpaymentInvoiceNo', 'billStatus', 'billpaymentAmount'));
+        return view('payments.index-bills', compact('billName', 'billpaymentInvoiceNo', 'convertedBillStatus', 'billpaymentAmount'));
     }
 
     /**
