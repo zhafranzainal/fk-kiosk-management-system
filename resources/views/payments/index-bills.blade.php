@@ -10,7 +10,7 @@
                     <div class="row">
                         <h4 class="header-title" style="margin-left: 10px">Bills List</h4>
 
-                        <form action="{{ route('payments.generate-bill') }}" method="POST">
+                        <form action="{{ route('payments.store-transaction') }}" method="POST">
                             @csrf
                             <button type="submit" class="btn btn-danger btn-sm">
                                 Generate Bill
@@ -43,11 +43,39 @@
                             @foreach ($billData as $bill)
                                 <tr>
 
-                                    <td>1</td>
+                                    <td>{{ $bill['transactionId'] }}</td>
                                     <td>{{ $bill['billName'] }}</td>
                                     <td>{{ $bill['billCode'] }}</td>
                                     <td>FKK{{ str_pad($bill['kioskNumber'], 2, '0', STR_PAD_LEFT) }}
-                                    <td>{{ $bill['convertedBillStatus'] }}</td>
+
+                                    <td>
+                                        @switch($bill['convertedBillStatus'])
+                                            @case('Paid')
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="8" width="8"
+                                                    viewBox="0 0 512 512">
+                                                    <path fill="#00ff40"
+                                                        d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z" />
+                                                </svg>
+                                            @break
+
+                                            @case('Unpaid')
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="8" width="8"
+                                                    viewBox="0 0 512 512">
+                                                    <path fill="#ff0000"
+                                                        d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z" />
+                                                </svg>
+                                            @break
+
+                                            @default
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="8" width="8"
+                                                    viewBox="0 0 512 512">
+                                                    <path fill="#FFA500"
+                                                        d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z" />
+                                                </svg>
+                                        @endswitch
+                                        <span>{{ $bill['convertedBillStatus'] }}</span>
+                                    </td>
+
                                     <td>25 Sep - 24 Oct</td>
                                     <td>{{ $bill['billpaymentAmount'] }}</td>
 

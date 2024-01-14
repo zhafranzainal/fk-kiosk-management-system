@@ -22,6 +22,7 @@ class PaymentController extends Controller
 
         // Loop through each transaction and fetch data for its bill code
         foreach ($transactions as $transaction) {
+
             $billCode = $transaction->bill_code;
 
             // Make API call for each bill code
@@ -40,19 +41,22 @@ class PaymentController extends Controller
 
             // Extract relevant data from the API response
             $billName = $decoded_result[0]['billName'];
-            $billStatus = $decoded_result[0]['billStatus'];
+            $billpaymentStatus = $decoded_result[0]['billpaymentStatus'];
             $billpaymentAmount = $decoded_result[0]['billpaymentAmount'];
 
             // Convert bill status to its corresponding value
-            switch ($billStatus) {
+            switch ($billpaymentStatus) {
                 case 1:
-                    $convertedBillStatus = 'Success';
+                    $convertedBillStatus = 'Paid';
                     break;
                 case 2:
-                    $convertedBillStatus = 'Pending';
+                    $convertedBillStatus = 'In Progress';
                     break;
                 case 3:
                     $convertedBillStatus = 'Fail';
+                    break;
+                case 4:
+                    $convertedBillStatus = 'Unpaid';
                     break;
                 default:
                     $convertedBillStatus = 'Unknown';
@@ -60,6 +64,7 @@ class PaymentController extends Controller
 
             // Store the data for each bill in the array
             $billData[] = [
+                'transactionId' => $transaction->id,
                 'billName' => $billName,
                 'billCode' => $billCode,
                 'kioskNumber' => $transaction->user->kioskParticipant->kiosk->id,
@@ -98,14 +103,12 @@ class PaymentController extends Controller
     {
         $this->authorize('create', Transaction::class);
 
-        $validated = $request->validated();
-
         $billId = $this->generateBill();
 
         $user = Auth::user();
         $user->transactions()->create(['id' => $billId, 'user_id' => $user->id]);
 
-        $transaction = Transaction::create($validated);
+        $transaction = Transaction::create();
 
         return redirect()->route('payments.index-transaction', $transaction)->withSuccess(__('Successfully stored transaction!'));
     }
