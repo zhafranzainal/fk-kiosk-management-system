@@ -106,8 +106,13 @@ class PaymentController extends Controller
 
         $kioskId = $user->kioskParticipant->kiosk->id;
 
+        // Create fake date for testing purpose
+        $testingDate = Carbon::create(2024, 2, 15, 12);
+        Carbon::setTestNow($testingDate);
+
         // Get the current month and year
         $currentMonthAndYear = Carbon::now()->format('F Y');
+        Carbon::setTestNow();
 
         $some_data = array(
             'userSecretKey' => config('payment-gateway.key'),
