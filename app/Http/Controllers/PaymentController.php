@@ -14,46 +14,63 @@ class PaymentController extends Controller
      */
     public function indexBill(Request $request)
     {
-        $some_data = array(
-            'billCode' => 'Rent-for-October-2023',
-        );
+        // Fetch all transactions
+        $transactions = Transaction::all();
 
-        $curl = curl_init();
+        // Initialize an array to store the data for each bill
+        $billData = [];
 
-        curl_setopt($curl, CURLOPT_POST, 1);
-        curl_setopt($curl, CURLOPT_URL, config('payment-gateway.api') . 'getBillTransactions');
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $some_data);
+        // Loop through each transaction and fetch data for its bill code
+        foreach ($transactions as $transaction) {
+            $billCode = $transaction->bill_code;
 
-        $result = curl_exec($curl);
-        curl_close($curl);
+            // Make API call for each bill code
+            $some_data = ['billCode' => $billCode];
 
-        $decoded_result = json_decode($result, true);
+            $curl = curl_init();
+            curl_setopt($curl, CURLOPT_POST, 1);
+            curl_setopt($curl, CURLOPT_URL, config('payment-gateway.api') . 'getBillTransactions');
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $some_data);
 
-        $billName = $decoded_result[0]['billName'];
-        $billpaymentInvoiceNo = $decoded_result[0]['billpaymentInvoiceNo'];
+            $result = curl_exec($curl);
+            curl_close($curl);
 
-        $billStatus = $decoded_result[0]['billStatus'];
+            $decoded_result = json_decode($result, true);
 
-        // Convert bill status to its corresponding value
-        switch ($billStatus) {
-            case 1:
-                $convertedBillStatus = 'Success';
-                break;
-            case 2:
-                $convertedBillStatus = 'Pending';
-                break;
-            case 3:
-                $convertedBillStatus = 'Fail';
-                break;
-            default:
-                $convertedBillStatus = 'Unknown';
+            // Extract relevant data from the API response
+            $billName = $decoded_result[0]['billName'];
+            $billStatus = $decoded_result[0]['billStatus'];
+            $billpaymentAmount = $decoded_result[0]['billpaymentAmount'];
+
+            // Convert bill status to its corresponding value
+            switch ($billStatus) {
+                case 1:
+                    $convertedBillStatus = 'Success';
+                    break;
+                case 2:
+                    $convertedBillStatus = 'Pending';
+                    break;
+                case 3:
+                    $convertedBillStatus = 'Fail';
+                    break;
+                default:
+                    $convertedBillStatus = 'Unknown';
+            }
+
+            // Store the data for each bill in the array
+            $billData[] = [
+                'billName' => $billName,
+                'billCode' => $billCode,
+                'kioskNumber' => $transaction->user->kioskParticipant->kiosk->id,
+                'convertedBillStatus' => $convertedBillStatus,
+                'billpaymentAmount' => $billpaymentAmount,
+            ];
         }
 
-        $billpaymentAmount = $decoded_result[0]['billpaymentAmount'];
-
-        return view('payments.index-bills', compact('billName', 'billpaymentInvoiceNo', 'convertedBillStatus', 'billpaymentAmount'));
+        return view('payments.index-bills', compact('billData'));
     }
+
 
     /**
      * Display the specified resource.

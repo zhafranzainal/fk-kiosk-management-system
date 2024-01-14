@@ -9,6 +9,14 @@
 
                     <div class="row">
                         <h4 class="header-title" style="margin-left: 10px">Bills List</h4>
+
+                        <form action="{{ route('payments.generate-bill') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                Generate Bill
+                            </button>
+                        </form>
+
                         <a href="{{ route('payments.index-transaction') }}" class="btn btn-danger btn-sm"
                             style="position: absolute; right:2%;">
                             Transaction History
@@ -22,43 +30,43 @@
                             <tr>
                                 <th>No.</th>
                                 <th>Bill Name</th>
-                                <th>Invoice No</th>
+                                <th>Bill Code</th>
                                 <th>Kiosk Number</th>
                                 <th>Status</th>
                                 <th>Billing Period</th>
-                                <th>Amount</th>
+                                <th>Amount (RM)</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
 
                         <tbody>
-                            {{-- @foreach ($kiosks as $index => $kiosk) --}}
-                            <tr>
+                            @foreach ($billData as $bill)
+                                <tr>
 
-                                <td>1</td>
-                                <td>{{ $billName }}</td>
-                                <td>{{ $billpaymentInvoiceNo }}</td>
-                                <td>FKK01</td>
-                                <td>{{ $convertedBillStatus }}</td>
-                                <td>25 Sep - 24 Oct</td>
-                                <td>{{ $billpaymentAmount }}</td>
+                                    <td>1</td>
+                                    <td>{{ $bill['billName'] }}</td>
+                                    <td>{{ $bill['billCode'] }}</td>
+                                    <td>FKK{{ str_pad($bill['kioskNumber'], 2, '0', STR_PAD_LEFT) }}
+                                    <td>{{ $bill['convertedBillStatus'] }}</td>
+                                    <td>25 Sep - 24 Oct</td>
+                                    <td>{{ $bill['billpaymentAmount'] }}</td>
 
-                                <td>
+                                    <td>
 
-                                    <a href="https://dev.toyyibpay.com/Rent-for-October-2023"
-                                        class="action-icon-danger">
-                                        <i class="mdi mdi-cash-plus"></i>
-                                    </a>
+                                        <a href="https://dev.toyyibpay.com/{{ $bill['billCode'] }}"
+                                            class="action-icon-danger">
+                                            <i class="mdi mdi-cash-plus"></i>
+                                        </a>
 
-                                    <a href="javascript:void(0);" class="action-icon-info" data-toggle="modal"
-                                        data-target="#bs-view-modal-lg">
-                                        <i class="mdi mdi-eye"></i>
-                                    </a>
+                                        <a href="javascript:void(0);" class="action-icon-info" data-toggle="modal"
+                                            data-target="#bs-view-modal-lg">
+                                            <i class="mdi mdi-eye"></i>
+                                        </a>
 
-                                </td>
+                                    </td>
 
-                            </tr>
-                            {{-- @endforeach --}}
+                                </tr>
+                            @endforeach
                         </tbody>
 
                     </table>
