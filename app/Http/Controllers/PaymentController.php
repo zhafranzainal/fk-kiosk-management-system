@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\KioskParticipant;
 use App\Models\Transaction;
 use Carbon\Carbon;
-use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class PaymentController extends Controller
 {
@@ -41,9 +40,9 @@ class PaymentController extends Controller
             $decoded_result = json_decode($result, true);
 
             // Extract relevant data from the API response
-            $billName = $decoded_result[0]['billName'];
-            $billpaymentStatus = $decoded_result[0]['billpaymentStatus'];
-            $billpaymentAmount = $decoded_result[0]['billpaymentAmount'];
+            $billName = $decoded_result[0]['billName'] ?? $transaction->bill_name;
+            $billpaymentStatus = $decoded_result[0]['billpaymentStatus'] ?? 4;
+            $billpaymentAmount = $decoded_result[0]['billpaymentAmount'] ?? 200;
 
             // Convert bill status to its corresponding value
             switch ($billpaymentStatus) {
@@ -102,50 +101,64 @@ class PaymentController extends Controller
      */
     public function generateBill(Request $request)
     {
-        $user = Auth::user();
-
-        $kioskId = $user->kioskParticipant->kiosk->id;
-
-        // Create fake date for testing purpose
-        $testingDate = Carbon::create(2024, 2, 15, 12);
-        Carbon::setTestNow($testingDate);
-
         // Get the current month and year
         $currentMonthAndYear = Carbon::now()->format('F Y');
-        Carbon::setTestNow();
 
-        $some_data = array(
-            'userSecretKey' => config('payment-gateway.key'),
-            'categoryCode' => config('payment-gateway.category'),
-            'billName' => 'Rent for ' . $currentMonthAndYear,
-            'billDescription' => 'Kiosk Rent for FKK0' . $kioskId,
-            'billPriceSetting' => 1,
-            'billPayorInfo' => 1,
-            'billAmount' => 20000,
-            'billTo' => $user->name,
-            'billEmail' => $user->email,
-            'billPhone' => $user->mobile_no,
-            'billSplitPayment' => 0,
-            'billPaymentChannel' => '0',
-            'billContentEmail' => 'Thank you for paying the rent for our kiosk!',
-            'billChargeToCustomer' => 0,
-        );
+        // Get all kiosk participants
+        $kioskParticipants = KioskParticipant::all();
 
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_POST, 1);
-        curl_setopt($curl, CURLOPT_URL, config('payment-gateway.api') . 'createBill');
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $some_data);
+        foreach ($kioskParticipants as $kioskParticipant) {
 
-        $result = curl_exec($curl);
-        curl_close($curl);
+            // Check if the kiosk participant has a kiosk relationship
+            if ($kiosk = $kioskParticipant->kiosk) {
 
-        $decoded_result = json_decode($result, true);
+                // Extract kiosk ID
+                $kioskId = $kiosk->id;
 
-        $billCode =  $decoded_result[0]['BillCode'];
-        $billAmount = $some_data['billAmount'] / 100;
+                // Create some_data for the bill
+                $some_data = array(
+                    'userSecretKey' => config('payment-gateway.key'),
+                    'categoryCode' => config('payment-gateway.category'),
+                    'billName' => 'Rent for ' . $currentMonthAndYear,
+                    'billDescription' => 'Kiosk Rent for FKK0' . $kioskId,
+                    'billPriceSetting' => 1,
+                    'billPayorInfo' => 1,
+                    'billAmount' => 20000,
+                    'billTo' => $kioskParticipant->user->name,
+                    'billEmail' => $kioskParticipant->user->email,
+                    'billPhone' => $kioskParticipant->user->mobile_no,
+                    'billSplitPayment' => 0,
+                    'billPaymentChannel' => '0',
+                    'billContentEmail' => 'Thank you for paying the rent for our kiosk!',
+                    'billChargeToCustomer' => 0,
+                );
 
-        $user->transactions()->create(['user_id' => $user->id, 'bill_code' => $billCode, 'amount' => $billAmount]);
+                // Make the API call to create the bill
+                $curl = curl_init();
+                curl_setopt($curl, CURLOPT_POST, 1);
+                curl_setopt($curl, CURLOPT_URL, config('payment-gateway.api') . 'createBill');
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($curl, CURLOPT_POSTFIELDS, $some_data);
+
+                $result = curl_exec($curl);
+                curl_close($curl);
+
+                // Decode the API response
+                $decoded_result = json_decode($result, true);
+
+                $billName = $some_data['billName'];
+                $billCode = $decoded_result[0]['BillCode'];
+                $billAmount = $some_data['billAmount'] / 100;
+
+                // Create a transaction record for the user
+                $kioskParticipant->user->transactions()->create([
+                    'user_id' => $kioskParticipant->user->id,
+                    'bill_name' => $billName,
+                    'bill_code' => $billCode,
+                    'amount' => $billAmount,
+                ]);
+            }
+        }
 
         return redirect()->route('payments.index-transaction')->withSuccess(__('Successfully stored transaction!'));
     }

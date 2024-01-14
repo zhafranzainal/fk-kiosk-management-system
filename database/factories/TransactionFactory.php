@@ -19,6 +19,7 @@ class TransactionFactory extends Factory
     {
         return [
             'user_id' => User::inRandomOrder()->pluck('id')->first(),
+            'bill_name' => $this->faker->word(),
             'bill_code' => $this->faker->word(),
             'amount' => $this->faker->randomFloat(2, 0, 1000),
             'status' => 'Pending',

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->foreignId('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->string('bill_name');
             $table->string('bill_code');
             $table->float('amount');
             $table->enum('status', ['Pending', 'Successful', 'Failed'])->default('Pending');
