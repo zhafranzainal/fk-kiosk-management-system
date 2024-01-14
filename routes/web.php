@@ -39,10 +39,15 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::get('/sales/show/{id}', [SaleController::class, 'showPupuk'])->name('sales.showPupuk');
     Route::put('/sales/show/{id}', [SaleController::class, 'updatePupuk'])->name('sales.updatePupuk');
 
-    Route::get('payments/bills/', [PaymentController::class, 'indexBill'])->name('payments.index-bill');;
-    Route::get('payments/bills/{transaction}', [PaymentController::class, 'showBill'])->name('payments.show-bill');;
-    Route::get('payments/transactions/', [PaymentController::class, 'indexTransaction'])->name('payments.index-transaction');;
-    Route::get('payments/transactions/{transaction}', [PaymentController::class, 'showTransaction'])->name('payments.show-transaction');;
+    Route::prefix('payments')->group(function () {
+        Route::get('bills/', [PaymentController::class, 'indexBill'])->name('payments.index-bill');
+        Route::post('bills/', [PaymentController::class, 'generateBill'])->name('payments.generate-bill');
+        Route::get('bills/{transaction}', [PaymentController::class, 'showBill'])->name('payments.show-bill');
+
+        Route::get('transactions/', [PaymentController::class, 'indexTransaction'])->name('payments.index-transaction');
+        Route::post('transactions/', [PaymentController::class, 'storeTransaction'])->name('payments.store-transaction');
+        Route::get('transactions/{transaction}', [PaymentController::class, 'showTransaction'])->name('payments.show-transaction');
+    });
 
     Route::resource('complaints', ComplaintController::class);
     Route::post('/complaints/assign-to/{complaint}', [ComplaintController::class, 'assignTo'])->name('complaints.assignTo');

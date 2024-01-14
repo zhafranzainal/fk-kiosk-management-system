@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Transaction;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PaymentController extends Controller
 {
@@ -69,7 +71,26 @@ class PaymentController extends Controller
         $this->authorize('view-any', Transaction::class);
 
         $transactions = Transaction::All();
-        return view('payments.index', compact('transactions'));
+        return view('payments.index-transactions', compact('transactions'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function storeTransaction(Request $request)
+    {
+        $this->authorize('create', Transaction::class);
+
+        $validated = $request->validated();
+
+        $billId = $this->generateBill();
+
+        $user = Auth::user();
+        $user->transactions()->create(['id' => $billId, 'user_id' => $user->id]);
+
+        $transaction = Transaction::create($validated);
+
+        return redirect()->route('payments.index-transaction', $transaction)->withSuccess(__('Successfully stored transaction!'));
     }
 
     /**
@@ -78,5 +99,49 @@ class PaymentController extends Controller
     public function showTransaction(Transaction $transaction)
     {
         //
+    }
+
+    public function generateBill()
+    {
+        $user = Auth::user();
+
+        $some_data = array(
+            'userSecretKey' => config('payment-gateway.key'),
+            'categoryCode' => config('payment-gateway.category'),
+            'billName' => 'Rent for January 2024',
+            'billDescription' => 'Kiosk Rent',
+            'billPriceSetting' => 1,
+            'billPayorInfo' => 1,
+            'billAmount' => 200,
+            // 'billReturnUrl' => 'http://bizapp.my',
+            // 'billCallbackUrl' => 'http://bizapp.my/paystatus',
+            // 'billExternalReferenceNo' => 'AFR341DFI',
+            'billTo' => $user->name,
+            'billEmail' => $user->email,
+            'billPhone' => $user->mobile_no,
+            'billSplitPayment' => 0,
+            'billPaymentChannel' => '0',
+            'billContentEmail' => 'Thank you for paying the rent for our kiosk!',
+            'billChargeToCustomer' => 0,
+        );
+
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_POST, 1);
+        curl_setopt($curl, CURLOPT_URL, config('payment-gateway.api') . 'createBill');
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $some_data);
+
+        $result = curl_exec($curl);
+        curl_close($curl);
+
+        $decoded_result = json_decode($result, true);
+        dd($decoded_result);
+
+
+        try {
+            return $decoded_result[0]->BillCode;
+        } catch (Exception $e) {
+            return null;
+        }
     }
 }
