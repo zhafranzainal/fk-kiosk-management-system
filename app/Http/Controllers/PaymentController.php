@@ -105,14 +105,16 @@ class PaymentController extends Controller
     {
         $user = Auth::user();
 
+        $kioskId = $user->kioskParticipant->kiosk->id;
+
         $some_data = array(
             'userSecretKey' => config('payment-gateway.key'),
             'categoryCode' => config('payment-gateway.category'),
             'billName' => 'Rent for January 2024',
-            'billDescription' => 'Kiosk Rent',
+            'billDescription' => 'Kiosk Rent for FKK0' . $kioskId,
             'billPriceSetting' => 1,
             'billPayorInfo' => 1,
-            'billAmount' => 200,
+            'billAmount' => 20000,
             // 'billReturnUrl' => 'http://bizapp.my',
             // 'billCallbackUrl' => 'http://bizapp.my/paystatus',
             // 'billExternalReferenceNo' => 'AFR341DFI',
@@ -135,13 +137,11 @@ class PaymentController extends Controller
         curl_close($curl);
 
         $decoded_result = json_decode($result, true);
-        dd($decoded_result);
 
-
-        try {
-            return $decoded_result[0]->BillCode;
-        } catch (Exception $e) {
-            return null;
-        }
+        // try {
+        //     return $decoded_result[0]['BillCode'];
+        // } catch (Exception $e) {
+        //     return null;
+        // }
     }
 }
