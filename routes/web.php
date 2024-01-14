@@ -44,7 +44,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::get('bills/{transaction}', [PaymentController::class, 'showBill'])->name('payments.show-bill');
 
         Route::get('transactions/', [PaymentController::class, 'indexTransaction'])->name('payments.index-transaction');
-        Route::post('transactions/', [PaymentController::class, 'storeTransaction'])->name('payments.store-transaction');
+        Route::post('transactions/', [PaymentController::class, 'generateBill'])->name('payments.store-transaction');
         Route::get('transactions/{transaction}', [PaymentController::class, 'showTransaction'])->name('payments.show-transaction');
     });
 

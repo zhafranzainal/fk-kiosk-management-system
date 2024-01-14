@@ -99,7 +99,7 @@ class PaymentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function storeTransaction(Request $request)
+    public function generateBill(Request $request)
     {
         $user = Auth::user();
 
