@@ -81,10 +81,12 @@
 
                                     <td>
 
-                                        <a href="https://dev.toyyibpay.com/{{ $bill['billCode'] }}"
-                                            class="action-icon-danger">
-                                            <i class="mdi mdi-cash-plus"></i>
-                                        </a>
+                                        @if ($bill['convertedBillStatus'] !== 'Paid')
+                                            <a href="https://dev.toyyibpay.com/{{ $bill['billCode'] }}"
+                                                class="action-icon-danger">
+                                                <i class="mdi mdi-cash-plus"></i>
+                                            </a>
+                                        @endif
 
                                         <a href="javascript:void(0);" class="action-icon-info" data-toggle="modal"
                                             data-target="#bs-view-modal-lg">
