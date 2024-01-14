@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Transaction;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -105,10 +106,13 @@ class PaymentController extends Controller
 
         $kioskId = $user->kioskParticipant->kiosk->id;
 
+        // Get the current month and year
+        $currentMonthAndYear = Carbon::now()->format('F Y');
+
         $some_data = array(
             'userSecretKey' => config('payment-gateway.key'),
             'categoryCode' => config('payment-gateway.category'),
-            'billName' => 'Rent for January 2024',
+            'billName' => 'Rent for ' . $currentMonthAndYear,
             'billDescription' => 'Kiosk Rent for FKK0' . $kioskId,
             'billPriceSetting' => 1,
             'billPayorInfo' => 1,
