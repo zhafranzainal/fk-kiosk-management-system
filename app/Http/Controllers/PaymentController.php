@@ -101,28 +101,6 @@ class PaymentController extends Controller
      */
     public function storeTransaction(Request $request)
     {
-        $this->authorize('create', Transaction::class);
-
-        $billId = $this->generateBill();
-
-        $user = Auth::user();
-        $user->transactions()->create(['id' => $billId, 'user_id' => $user->id]);
-
-        $transaction = Transaction::create();
-
-        return redirect()->route('payments.index-transaction', $transaction)->withSuccess(__('Successfully stored transaction!'));
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function showTransaction(Transaction $transaction)
-    {
-        //
-    }
-
-    public function generateBill()
-    {
         $user = Auth::user();
 
         $kioskId = $user->kioskParticipant->kiosk->id;
@@ -135,9 +113,6 @@ class PaymentController extends Controller
             'billPriceSetting' => 1,
             'billPayorInfo' => 1,
             'billAmount' => 20000,
-            // 'billReturnUrl' => 'http://bizapp.my',
-            // 'billCallbackUrl' => 'http://bizapp.my/paystatus',
-            // 'billExternalReferenceNo' => 'AFR341DFI',
             'billTo' => $user->name,
             'billEmail' => $user->email,
             'billPhone' => $user->mobile_no,
@@ -158,10 +133,19 @@ class PaymentController extends Controller
 
         $decoded_result = json_decode($result, true);
 
-        // try {
-        //     return $decoded_result[0]['BillCode'];
-        // } catch (Exception $e) {
-        //     return null;
-        // }
+        $billCode =  $decoded_result[0]['BillCode'];
+        $billAmount = $some_data['billAmount'] / 100;
+
+        $user->transactions()->create(['user_id' => $user->id, 'bill_code' => $billCode, 'amount' => $billAmount]);
+
+        return redirect()->route('payments.index-transaction')->withSuccess(__('Successfully stored transaction!'));
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function showTransaction(Transaction $transaction)
+    {
+        //
     }
 }
