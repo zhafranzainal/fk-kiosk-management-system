@@ -14,8 +14,11 @@ class PaymentController extends Controller
      */
     public function indexBill(Request $request)
     {
-        // Fetch all transactions
-        $transactions = Transaction::all();
+        if (auth()->user()->hasRole('FK Bursary')) {
+            $transactions = Transaction::all();
+        } else {
+            $transactions = auth()->user()->transactions;
+        }
 
         // Initialize an array to store the data for each bill
         $billData = [];
