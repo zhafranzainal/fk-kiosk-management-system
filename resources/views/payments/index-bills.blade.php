@@ -10,12 +10,12 @@
                     <div class="row">
                         <h4 class="header-title" style="margin-left: 10px">Bills List</h4>
 
-                        <form action="{{ route('payments.store-transaction') }}" method="POST">
+                        {{-- <form action="{{ route('payments.store-transaction') }}" method="POST">
                             @csrf
                             <button type="submit" class="btn btn-danger btn-sm">
                                 Generate Bill
                             </button>
-                        </form>
+                        </form> --}}
 
                         <a href="{{ route('payments.index-transaction') }}" class="btn btn-danger btn-sm"
                             style="position: absolute; right:2%;">
