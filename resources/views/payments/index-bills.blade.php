@@ -76,7 +76,7 @@
                                         <span>{{ $bill['convertedBillStatus'] }}</span>
                                     </td>
 
-                                    <td>25 Sep - 24 Oct</td>
+                                    <td>{{ $bill['billingPeriod'] }}</td>
                                     <td>{{ $bill['billpaymentAmount'] }}</td>
 
                                     <td>

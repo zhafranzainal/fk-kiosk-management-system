@@ -28,6 +28,11 @@ class PaymentController extends Controller
 
             $billCode = $transaction->bill_code;
 
+            $createdAt = $transaction->created_at;
+            $carbonCreatedAt = Carbon::parse($createdAt);
+
+            $billingPeriod = $carbonCreatedAt->isoFormat('DD MMM') . ' - ' . $carbonCreatedAt->addMonth()->subDay()->isoFormat('DD MMM');
+
             // Make API call for each bill code
             $some_data = ['billCode' => $billCode];
 
@@ -72,6 +77,7 @@ class PaymentController extends Controller
                 'billCode' => $billCode,
                 'kioskNumber' => $transaction->user->kioskParticipant->kiosk->id,
                 'convertedBillStatus' => $convertedBillStatus,
+                'billingPeriod' => $billingPeriod,
                 'billpaymentAmount' => $billpaymentAmount,
             ];
         }
@@ -104,8 +110,8 @@ class PaymentController extends Controller
      */
     public function generateBill(Request $request)
     {
-        // Get the current month and year
-        $currentMonthAndYear = Carbon::now()->format('F Y');
+        // Get next month from current month
+        $nextMonthYear = Carbon::now()->addMonth()->format('F Y');
 
         // Get all kiosk participants
         $kioskParticipants = KioskParticipant::all();
@@ -122,7 +128,7 @@ class PaymentController extends Controller
                 $some_data = array(
                     'userSecretKey' => config('payment-gateway.key'),
                     'categoryCode' => config('payment-gateway.category'),
-                    'billName' => 'Rent for ' . $currentMonthAndYear,
+                    'billName' => 'Rent for ' . $nextMonthYear,
                     'billDescription' => 'Kiosk Rent for FKK0' . $kioskId,
                     'billPriceSetting' => 1,
                     'billPayorInfo' => 1,
