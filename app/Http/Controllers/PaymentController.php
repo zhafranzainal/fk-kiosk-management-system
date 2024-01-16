@@ -50,7 +50,7 @@ class PaymentController extends Controller
             // Extract relevant data from the API response
             $billName = $decoded_result[0]['billName'] ?? $transaction->bill_name;
             $billpaymentStatus = $decoded_result[0]['billpaymentStatus'] ?? 4;
-            $billpaymentAmount = $decoded_result[0]['billpaymentAmount'] ?? 200;
+            $billpaymentAmount = $decoded_result[0]['billpaymentAmount'] ?? '200.00';
 
             // Convert bill status to its corresponding value
             switch ($billpaymentStatus) {
