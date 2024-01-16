@@ -101,7 +101,12 @@ class PaymentController extends Controller
     {
         $this->authorize('view-any', Transaction::class);
 
-        $transactions = Transaction::All();
+        if (auth()->user()->hasRole('FK Bursary')) {
+            $transactions = Transaction::all();
+        } else {
+            $transactions = auth()->user()->transactions;
+        }
+
         return view('payments.index-transactions', compact('transactions'));
     }
 
