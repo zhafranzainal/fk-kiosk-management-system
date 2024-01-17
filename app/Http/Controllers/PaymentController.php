@@ -233,7 +233,7 @@ class PaymentController extends Controller
             }
         }
 
-        return redirect()->route('payments.index-transaction')->withSuccess(__('Successfully stored transaction!'));
+        return redirect()->route('payments.index-bill')->withSuccess(__('Successfully stored bill!'));
     }
 
     /**
