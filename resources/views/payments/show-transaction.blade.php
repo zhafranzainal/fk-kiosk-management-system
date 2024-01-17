@@ -13,7 +13,7 @@
             <div class="row">
 
                 <div class="col-10">
-                    <h2 style="font-size: 20px">Bill #{{ $transaction->id }}</h2>
+                    <h2 style="font-size: 20px">Transaction #{{ $transaction->id }}</h2>
                 </div>
 
                 <div class="d-flex align-items-center">
@@ -49,7 +49,14 @@
 
                 <div class="col-4">
                     <label for="name">Kiosk Name</label>
-                    <p class="text-black">{{ $transaction->user->name }}</p>
+                    <p class="text-black">{{ $transaction->user->kioskParticipant->kiosk->name }}</p>
+                </div>
+
+                <div class="col-1" style="border-left:1px solid #d6d6d6;height:50px"></div>
+
+                <div class="col-4">
+                    <label for="name">Amount (RM)</label>
+                    <p class="text-black">{{ $transaction->amount }}</p>
                 </div>
 
             </div>
@@ -72,7 +79,7 @@
 
                 <div class="col">
                     <label for="kiosk"><b>Kiosk Number</b></label>
-                    <p>FKK</p>
+                    <p>FKK01</p>
                 </div>
 
             </div>
@@ -100,7 +107,7 @@
 
                 <div class="col">
                     <label for="kiosk"><b>Business Period</b></label>
-                    <p>3 Jan 2023 - 3 Dec 2023</p>
+                    <p>3 Jan 2024 - 3 Dec 2024</p>
                 </div>
 
             </div>

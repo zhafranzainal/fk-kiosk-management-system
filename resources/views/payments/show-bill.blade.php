@@ -43,13 +43,13 @@
 
             </div>
 
-            <p class="mb-3"><b>{{ optional($transaction->created_at)->format('d F Y, H:i') }}</b></p>
+            <p class="mb-3"><b>16 Jan - 15 Feb</b></p>
 
             <div class="row">
 
                 <div class="col-4">
                     <label for="name">Kiosk Name</label>
-                    <p class="text-black">{{ $transaction->user->name }}</p>
+                    <p class="text-black">{{ $transaction->user->kioskParticipant->kiosk->name }}</p>
                 </div>
 
             </div>
@@ -72,7 +72,7 @@
 
                 <div class="col">
                     <label for="kiosk"><b>Kiosk Number</b></label>
-                    <p>FKK</p>
+                    <p>FKK01</p>
                 </div>
 
             </div>
@@ -100,7 +100,7 @@
 
                 <div class="col">
                     <label for="kiosk"><b>Business Period</b></label>
-                    <p>3 Jan 2023 - 3 Dec 2023</p>
+                    <p>3 Jan 2024 - 3 Dec 2024</p>
                 </div>
 
             </div>
@@ -108,7 +108,7 @@
             <div class="row mb-1">
 
                 <div class="col">
-                    <label for="name"><b>Contact No</b></label>
+                    <label for="name"><b>Contact Number</b></label>
                     <p>{{ $transaction->user->mobile_no }}</p>
                 </div>
 
