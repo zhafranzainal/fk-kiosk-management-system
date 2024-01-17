@@ -91,7 +91,7 @@ class PaymentController extends Controller
      */
     public function showBill(Transaction $transaction)
     {
-        //
+        return view('payments.show-bill', compact('transaction'));
     }
 
     /**

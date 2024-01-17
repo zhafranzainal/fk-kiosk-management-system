@@ -90,8 +90,8 @@
                                             @endif
                                         @endrole
 
-                                        <a href="javascript:void(0);" class="action-icon-info" data-toggle="modal"
-                                            data-target="#bs-view-modal-lg">
+                                        <a href="{{ route('payments.show-bill', $bill['transactionId']) }}"
+                                            class="action-icon-info">
                                             <i class="mdi mdi-eye"></i>
                                         </a>
 
