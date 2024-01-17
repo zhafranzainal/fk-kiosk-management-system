@@ -158,7 +158,7 @@
         $(document).ready(function() {
             $('.kioskNumber').on('change', function() {
                 var businessTypeId = $(this).find(':selected').data('business-type-id');
-                if ($('#edit-application-modal{{ $application->id }}').is(':visible')) { // check if edit modal is open
+                if ($('#edit-application-modal{{ $application->id ?? 'null' }}').is(':visible')) { // check if edit modal is open
                     $('.businessType').val(businessTypeId); // update business type in modal
                 } else {
                     $(this).closest('tr').find('.businessType').val(businessTypeId); // update business type in row
