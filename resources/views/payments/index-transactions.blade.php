@@ -8,11 +8,7 @@
                 <div class="card-body">
 
                     <div class="row">
-                        <h4 class="header-title" style="margin-left: 10px">Bills List</h4>
-                        <a href="{{ route('payments.index-transaction') }}" class="btn btn-danger btn-sm"
-                            style="position: absolute; right:2%;">
-                            Transaction History
-                        </a>
+                        <h4 class="header-title" style="margin-left: 10px">Transaction History</h4>
                     </div>
                     <br>
 
@@ -20,25 +16,56 @@
 
                         <thead style="background: #F9FAFB;">
                             <tr>
+                                <th>ID</th>
                                 <th>Reference No.</th>
                                 <th>Payer Name</th>
                                 <th>Kiosk Number</th>
-                                <th>Amount</th>
                                 <th>Status</th>
+                                <th>Payment Date</th>
+                                <th>Amount (RM)</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
 
                         <tbody>
-                            @foreach ($transactions as $transaction)
+                            @foreach ($billData as $bill)
                                 <tr>
 
-                                    <td>{{ $transaction->id }}</td>
-                                    <td>{{ $transaction->user->name }}</td>
-                                    <td>FKK{{ str_pad($transaction->user->kioskParticipant->kiosk->id, 2, '0', STR_PAD_LEFT) }}
+                                    <td>{{ $bill['transactionId'] }}</td>
+                                    <td>{{ $bill['referenceNo'] }}</td>
+                                    <td>{{ $bill['payerName'] }}</td>
+                                    <td>FKK{{ str_pad($bill['kioskNumber'], 2, '0', STR_PAD_LEFT) }}</td>
+
+                                    <td>
+                                        @switch($bill['convertedBillStatus'])
+                                            @case('Successful')
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="8" width="8"
+                                                    viewBox="0 0 512 512">
+                                                    <path fill="#00ff40"
+                                                        d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z" />
+                                                </svg>
+                                            @break
+
+                                            @case('Pending')
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="8" width="8"
+                                                    viewBox="0 0 512 512">
+                                                    <path fill="#FFA500"
+                                                        d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z" />
+                                                </svg>
+                                            @break
+
+                                            @default
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="8" width="8"
+                                                    viewBox="0 0 512 512">
+                                                    <path fill="#ff0000"
+                                                        d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z" />
+                                                </svg>
+                                        @endswitch
+                                        <span>{{ $bill['convertedBillStatus'] }}</span>
                                     </td>
-                                    <td>RM {{ $transaction->amount }}</td>
-                                    <td>{{ $transaction->status }}</td>
+
+                                    <td>{{ $bill['paymentDate'] }}</td>
+                                    <td>{{ $bill['billpaymentAmount'] }}</td>
 
                                     <td>
                                         <a href="javascript:void(0);" class="action-icon-info" data-toggle="modal"

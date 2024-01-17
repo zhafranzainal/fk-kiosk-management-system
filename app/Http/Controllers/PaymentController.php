@@ -107,7 +107,66 @@ class PaymentController extends Controller
             $transactions = auth()->user()->transactions;
         }
 
-        return view('payments.index-transactions', compact('transactions'));
+        // Initialize an array to store the data for each bill
+        $billData = [];
+
+        // Loop through each transaction and fetch data for its bill code
+        foreach ($transactions as $transaction) {
+
+            $billCode = $transaction->bill_code;
+
+            $paymentDate = Carbon::parse($transaction->updated_at)->format('d/m/Y H:i:s');
+
+            // Make API call for each bill code
+            $some_data = ['billCode' => $billCode];
+
+            $curl = curl_init();
+            curl_setopt($curl, CURLOPT_POST, 1);
+            curl_setopt($curl, CURLOPT_URL, config('payment-gateway.api') . 'getBillTransactions');
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $some_data);
+
+            $result = curl_exec($curl);
+            curl_close($curl);
+
+            $decoded_result = json_decode($result, true);
+
+            // Extract relevant data from the API response
+            $referenceNo = $decoded_result[0]['billpaymentInvoiceNo'] ?? $billCode;
+            $billpaymentStatus = $decoded_result[0]['billpaymentStatus'] ?? 4;
+            $billpaymentAmount = $decoded_result[0]['billpaymentAmount'] ?? '200.00';
+
+            // Convert bill status to its corresponding value
+            switch ($billpaymentStatus) {
+                case 1:
+                    $convertedBillStatus = 'Successful';
+                    break;
+                case 2:
+                    $convertedBillStatus = 'In Progress';
+                    break;
+                case 3:
+                    $convertedBillStatus = 'Unsuccessful';
+                    break;
+                case 4:
+                    $convertedBillStatus = 'Pending';
+                    break;
+                default:
+                    $convertedBillStatus = 'Unknown';
+            }
+
+            // Store the data for each bill in the array
+            $billData[] = [
+                'transactionId' => $transaction->id,
+                'referenceNo' => $referenceNo,
+                'payerName' => $transaction->user->name,
+                'kioskNumber' => $transaction->user->kioskParticipant->kiosk->id,
+                'convertedBillStatus' => $convertedBillStatus,
+                'paymentDate' => $paymentDate,
+                'billpaymentAmount' => $billpaymentAmount,
+            ];
+        }
+
+        return view('payments.index-transactions', compact('billData'));
     }
 
     /**
