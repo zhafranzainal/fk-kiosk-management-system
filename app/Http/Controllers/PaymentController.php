@@ -172,7 +172,7 @@ class PaymentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function generateBill(Request $request)
+    public function generateBill()
     {
         // Get next month from current month
         $nextMonthYear = Carbon::now()->addMonth()->format('F Y');
@@ -241,6 +241,6 @@ class PaymentController extends Controller
      */
     public function showTransaction(Transaction $transaction)
     {
-        //
+        return view('payments.show-transaction', compact('transaction'));
     }
 }
